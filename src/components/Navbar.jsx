@@ -3,7 +3,8 @@ import React from "react"
 export default function Navbar() {
     return (
         <nav>
-            <h1>NAVBAR</h1>
+            <h1 className="nav-title">Route Explorer</h1>
+            <h3 className="nav-text">Dijkstra's algorithm</h3>
         </nav>
     )
 }

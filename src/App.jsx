@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Navbar from './components/Navbar'
 import Main from './components/Main'
 
-function App() {
+export default function App() {
   
   return (
     <div>
@@ -12,4 +12,3 @@ function App() {
   )
 }
 
-export default App
