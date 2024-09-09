@@ -1,5 +1,6 @@
 import React from "react"
 
+// a function that handle navbar
 export default function Navbar() {
     return (
         <nav>
