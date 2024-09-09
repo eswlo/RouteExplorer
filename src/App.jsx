@@ -1,12 +1,15 @@
 import { useState } from 'react'
-import './App.css'
+import Navbar from './components/Navbar'
+import Main from './components/Main'
 
 function App() {
-
+  
   return (
-    <h1>HELLO WORLD</h1>
+    <div>
+          <Navbar />
+          <Main />
+    </div>
   )
-
 }
 
 export default App
