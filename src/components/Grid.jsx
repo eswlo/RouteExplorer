@@ -13,7 +13,7 @@ export default function Grid() {
 
     // create and return a new cell object
     function createNewCell(x, y) {
-        console.log(x, y);
+        // console.log(x, y);
         return ({
         id: nanoid(),
         x: x,
@@ -30,9 +30,9 @@ export default function Grid() {
     function createNewGrid() {
         const newGrid = [];
         for (let y = 0; y < HEIGHT; y++) {
-        for (let x = 0; x < WIDTH; x++) {
-            newGrid.push(createNewCell(x, y));
-        }
+            for (let x = 0; x < WIDTH; x++) {
+                newGrid.push(createNewCell(x, y));
+            }
         }
         return newGrid;
     }

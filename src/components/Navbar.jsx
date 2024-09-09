@@ -1,7 +1,7 @@
 import React from "react"
 
 // a function that handle navbar
-export default function Navbar() {
+export default function Navbar(props) {
     return (
         <nav>
             <h1 className="nav-title">Route Explorer</h1>
@@ -12,7 +12,8 @@ export default function Navbar() {
                     id="setStart"
                     name="setState"
                     value="setStart"
-                    // onChange={handle}
+                    onChange={() => props.handleRadioChange("setStart")}
+                    defaultChecked 
                 />
                 <label className="nav-radio-label" htmlFor="setStart">Set Start (by clicking a cell)</label>
                 <br />
@@ -22,7 +23,7 @@ export default function Navbar() {
                     id="setEnd"
                     name="setState"
                     value="setEnd"
-                    // onChange={handle}
+                    onChange={() => props.handleRadioChange("setEnd")}
                 />
                 <label className="nav-radio-label" htmlFor="setEnd">Set End (by clicking a cell)</label>
                 <br />
@@ -32,7 +33,7 @@ export default function Navbar() {
                     id="setBarriers"
                     name="setState"
                     value="setBarriers"
-                    // onChange={handle}
+                    onChange={() => props.handleRadioChange("setBarriers")}
                 />
                 <label className="nav-radio-label" htmlFor="setBarriers">Set Barriers (by hovering over cells)</label>
                 <br />
