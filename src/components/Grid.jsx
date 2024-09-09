@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { nanoid } from "nanoid"
 import Cell from "./Cell"
 
+// a function that generate a grid
 export default function Grid() {
     const WIDTH = 100;
     const HEIGHT = 40;
@@ -36,6 +37,7 @@ export default function Grid() {
         return newGrid;
     }
 
+    // map all cells in grid to Cell component
     const cellElements = grid.map((cell) => {
         return (
             <Cell 
@@ -45,6 +47,7 @@ export default function Grid() {
         )
     })
 
+    // define css style for grid
     const gridStyle = {
         display: 'grid',
         gridTemplate: `auto auto / repeat(${WIDTH}, 1fr)`,
