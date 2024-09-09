@@ -1,10 +1,11 @@
 import React from "react"
 import { useState } from 'react'
 import { nanoid } from "nanoid"
+import Cell from "./Cell"
 
 export default function Grid() {
-    const WIDTH = 50;
-    const HEIGHT = 50;
+    const WIDTH = 100;
+    const HEIGHT = 40;
 
     const [grid, setGrid] = useState(createNewGrid());
     const [doneSearch, setDoneSearch] = React.useState(false); // set True if search is finalized 
@@ -35,9 +36,24 @@ export default function Grid() {
         return newGrid;
     }
 
+    const cellElements = grid.map((cell) => {
+        return (
+            <Cell 
+            key={cell.id}
+            cell={cell}
+            />
+        )
+    })
+
+    const gridStyle = {
+        display: 'grid',
+        gridTemplate: `auto auto / repeat(${WIDTH}, 1fr)`,
+        gap: '0px',
+    }
+
     return (
-        <div>
-            <p>Grid</p>    
+        <div className="grid" style={gridStyle}>
+            {cellElements}  
         </div>
     )
 }

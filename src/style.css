@@ -26,9 +26,19 @@ nav {
 }
 
 main {
-    padding: 70px 80px;
+    padding: 25px 50px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cell {
+    height: 0.8rem;
+    width: 0.8rem;
+    border: 0.5px solid rgb(176, 175, 175);
+    cursor: pointer;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
