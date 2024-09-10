@@ -8,14 +8,14 @@ export default function App() {
   const [radioState, setRadioState] = useState("setStart")
 
   function handleRadioChange(newRadioState) {
-    console.log(newRadioState);
+    // console.log(newRadioState);
     setRadioState(newRadioState);
   }
 
   return (
     <div>
           <Navbar handleRadioChange={handleRadioChange}/>
-          <Main />
+          <Main radioState={radioState}/>
     </div>
   )
 }
