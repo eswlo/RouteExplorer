@@ -68,8 +68,6 @@ main {
 }
 
 .cell {
-    height: 0.8rem;
-    width: 0.8rem;
     border: 0.5px solid rgb(176, 175, 175);
     cursor: pointer;
     display: flex;

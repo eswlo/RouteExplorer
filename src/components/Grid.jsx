@@ -95,7 +95,7 @@ export default function Grid(props) {
         id: nanoid(),
         x: x,
         y: y, 
-        state: "",
+        state: "", // 5 states: start, end, barrier, visited, path
         color: DEFAULTCOLOR
         })
     }
