@@ -24,34 +24,37 @@ export default function Grid(props) {
         let newColor = "";
         let newState = "";
 
-        if (props.radioState === "setStart") {
-            newColor = STARTCOLOR;
-            newState = "start";
-        } else if (props.radioState === "setEnd") {
-            newColor = ENDCOLOR;
-            newState = "setEnd";
-        } else {
-            newColor = BARRIERCOLOR;
-            newState = "setBarriers";
+        // only set new colors and states when the clicked/hovered cell is a barrier or in default state.
+        if (cell.state === "" || cell.state === "barriers") {
+            if (props.radioState === "setStart") {
+                newColor = STARTCOLOR;
+                newState = "start";
+            } else if (props.radioState === "setEnd") {
+                newColor = ENDCOLOR;
+                newState = "end";
+            } else {
+                newColor = BARRIERCOLOR;
+                newState = "barriers";
+            }
+    
+            // console.log(cell.x, cell.y);
+    
+            setGrid((prevGrid) => {
+                return (
+                    prevGrid.map((oldCell) => {
+                        if (oldCell.x == cell.x && oldCell.y == cell.y) {
+                            return ({
+                                ...oldCell,
+                                state: newState,
+                                color: newColor
+                            })
+                        } else {
+                            return oldCell
+                        }
+                    })
+                )
+            })
         }
-
-        // console.log(cell.x, cell.y);
-
-        setGrid((prevGrid) => {
-            return (
-                prevGrid.map((oldCell) => {
-                    if (oldCell.x == cell.x && oldCell.y == cell.y) {
-                        return ({
-                            ...oldCell,
-                            state: newState,
-                            color: newColor
-                        })
-                    } else {
-                        return oldCell
-                    }
-                })
-            )
-        })
     }
 
     const handleMouseDown = useCallback((cell) => {
@@ -60,7 +63,7 @@ export default function Grid(props) {
     }, [isMouseDown, props.radioState]);
 
     const handleMouseOver = useCallback((cell) => {
-        if (isMouseDown) {
+        if (isMouseDown && props.radioState === "setBarriers") {
             setNewStateAndColor(cell);
         }
     }, [isMouseDown, props.radioState]);
