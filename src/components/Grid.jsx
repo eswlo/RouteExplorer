@@ -17,52 +17,71 @@ export default function Grid(props) {
     const [grid, setGrid] = useState(createNewGrid());
     const [doneSearch, setDoneSearch] = React.useState(false); // set True if search is finalized 
     const [isMouseDown, setIsMouseDown] = useState(false);
+    const [isStartSet, setStart] = useState(false);
+    const [isEndSet, setEnd] = useState(false);
 
-    const handleMouseUp = () => setIsMouseDown(false);
+
+    function updateGrid(cell, newState, newColor) {
+        setGrid((prevGrid) => {
+            return (
+                prevGrid.map((oldCell) => {
+                    if (oldCell.x == cell.x && oldCell.y == cell.y) {
+                        return ({
+                            ...oldCell,
+                            state: newState,
+                            color: newColor
+                        })
+                    } else {
+                        return oldCell
+                    }
+                })
+            )
+        })
+    }
+
 
     function setNewStateAndColor(cell) {
         let newColor = "";
         let newState = "";
-
-        // only set new colors and states when the clicked/hovered cell is a barrier or in default state.
-        if (cell.state === "" || cell.state === "barriers") {
-            if (props.radioState === "setStart") {
-                newColor = STARTCOLOR;
+        if (props.radioState === "setStart") {
+            if (!isStartSet) {
                 newState = "start";
-            } else if (props.radioState === "setEnd") {
-                newColor = ENDCOLOR;
-                newState = "end";
+                newColor = STARTCOLOR;
+                setStart(true);
+                updateGrid(cell, newState, newColor);
             } else {
-                newColor = BARRIERCOLOR;
-                newState = "barriers";
+                return
             }
-    
-            // console.log(cell.x, cell.y);
-    
-            setGrid((prevGrid) => {
-                return (
-                    prevGrid.map((oldCell) => {
-                        if (oldCell.x == cell.x && oldCell.y == cell.y) {
-                            return ({
-                                ...oldCell,
-                                state: newState,
-                                color: newColor
-                            })
-                        } else {
-                            return oldCell
-                        }
-                    })
-                )
-            })
+        } else if (props.radioState === "setEnd") {
+            if (!isEndSet) {
+                newState = "end";
+                newColor = ENDCOLOR;
+                setEnd(true);
+                updateGrid(cell, newState, newColor);
+            } else {
+                return
+            }
+        } else {
+            newColor = BARRIERCOLOR;
+            newState = "barriers";
+            if (cell.state === "") {
+                updateGrid(cell, newState, newColor);
+            }
         }
     }
 
+    const handleMouseUp = () => setIsMouseDown(false);
+
     const handleMouseDown = useCallback((cell) => {
+        // console.log("down");
+
         setIsMouseDown(true);
         setNewStateAndColor(cell);
     }, [isMouseDown, props.radioState]);
 
     const handleMouseOver = useCallback((cell) => {
+        // console.log("over");
+
         if (isMouseDown && props.radioState === "setBarriers") {
             setNewStateAndColor(cell);
         }
