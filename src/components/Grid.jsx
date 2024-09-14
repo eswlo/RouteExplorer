@@ -79,14 +79,28 @@ export default function Grid(props) {
                 });
             }
         } else {
-            newColor = BARRIERCOLOR;
-            newState = BARRIERSTATE;
+            // cell.state === DEFAULTSTATE 
+            //     ? updateGrid({
+            //         ...cell,
+            //         state: BARRIERSTATE,
+            //         color: BARRIERCOLOR}) 
+            //     : updateGrid({
+            //         ...cell,
+            //         state: DEFAULTSTATE,
+            //         color: DEFAULTCOLOR
+            //     })
             if (cell.state === DEFAULTSTATE) {
                 updateGrid({
                     ...cell,
-                    state: newState,
-                    color: newColor
+                    state: BARRIERSTATE,
+                    color: BARRIERCOLOR
                 });              
+            } else if (cell.state === BARRIERSTATE) {
+                updateGrid({
+                    ...cell,
+                    state: DEFAULTSTATE,
+                    color: DEFAULTCOLOR
+                });  
             }
         }
     }

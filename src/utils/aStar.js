@@ -1,4 +1,3 @@
-import squaredDistance from './squaredDistance';
 import * as CONSTANTS from './constants';
 import { MinHeap } from './minHeap';
 
@@ -40,6 +39,9 @@ function getNeighborCellsArr(curr, grid) {
 
 
 function pushToQueueAndRender(cell, queue, updateGrid) {
+    if (cell.state !== CONSTANTS.STARTSTATE && cell.state !== CONSTANTS.ENDSTATE) {
+        cell.color = CONSTANTS.QUEUECOLOR;
+    }
     queue.heapPush(cell);
     updateGrid(cell);
 }
@@ -52,22 +54,25 @@ function addToSetAndRender(cell, visitedSet, updateGrid) {
     updateGrid(cell);
 }
 
-function calculateCosts(cell, startCell, endCell) {
-    if (cell.g === null) {
-        cell.g = squaredDistance(cell, startCell);
-        cell.h = squaredDistance(cell, endCell);
-        cell.f = cell.g + cell.h;
+function setNeighborCellCosts(curr, neighbor, startCell, endCell) {
+    neighbor.h = getDistance(neighbor, endCell);
+    if (neighbor.f === Infinity) {
+        neighbor.g = curr.g + getDistance(curr, neighbor);
+        neighbor.f = neighbor.g + neighbor.h;
     } else {
-        cell.g = Math.min(cell.g, cell.prev.g + squaredDistance(cell, cell.prev));
-        cell.f = cell.g + cell.h;
+        if (isNewPathShorter(curr, neighbor)) {
+            neighbor.g = curr.g + getDistance(curr, neighbor);
+            neighbor.f = neighbor.g + neighbor.h;
+        } 
     }
 }
 
 function getAndDrawPath(cell, startCell, updateGrid) {
     const path = [];
     let curr = cell;
-    while (curr.x != startCell.x && curr.y != startCell.y) {
+    while (curr.id !== startCell.id) {
         path.unshift(curr);
+        console.log(curr.x, curr.y);
         curr = curr.prev;
     }
     path.unshift(curr);
@@ -77,34 +82,48 @@ function getAndDrawPath(cell, startCell, updateGrid) {
     })
 }
 
+
+function getDistance(cell1, cell2) {
+    const x = Math.abs(cell1.x - cell2.x);
+    const y = Math.abs(cell1.y - cell2.y);
+    return Math.sqrt((x*x + y*y));
+}
+
+function isNewPathShorter(curr, neighbor) {
+    return ((curr.g + getDistance(curr, neighbor)) < neighbor.g)
+}
+
 export default async function aStar(startCell, endCell, grid, updateGrid) {
     const queue = new MinHeap();
     const visitedSet = new Set();
 
+    startCell.g = 0;
+    startCell.h = getDistance(startCell, endCell);
+    startCell.f = startCell.g + startCell.h;
     pushToQueueAndRender(startCell, queue, updateGrid);
 
     while (!queue.isEmpty()) {
 
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second for each loop
+        await new Promise(resolve => setTimeout(resolve, 10)); // Wait for certain seconds for each loop
 
         const curr = queue.heapPop(); // pop the cell with lowest f cost
         addToSetAndRender(curr, visitedSet, updateGrid);
-        if (curr.x === endCell.x && curr.y == endCell.y) {
+        if (curr.id === endCell.id) {
             return getAndDrawPath(curr, startCell, updateGrid);
         } else {
             const neighborCellsArr = getNeighborCellsArr(curr, grid);
-            neighborCellsArr.forEach((nc) => {
-                if (nc.state !== CONSTANTS.BARRIERSTATE && !visitedSet.has(nc)) {
+            for (const nc of neighborCellsArr) {
+                if (nc.state === CONSTANTS.BARRIERSTATE || visitedSet.has(nc)) {
+                    continue;
+                }
+                if (isNewPathShorter(curr, nc) || !queue.contains(nc)) {
+                    setNeighborCellCosts(curr, nc, startCell, endCell);
                     nc.prev = curr;
-                    if (nc.state !== CONSTANTS.ENDSTATE) {
-                        nc.color = CONSTANTS.QUEUECOLOR;
-                    }
-                    calculateCosts(nc, startCell, endCell);
                     if (!queue.contains(nc)) {
                         pushToQueueAndRender(nc, queue, updateGrid);
                     }
                 }
-            })
+            }
         }
     }
     return "No route found";

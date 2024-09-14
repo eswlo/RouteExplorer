@@ -79,7 +79,7 @@ class MinHeap {
         }
         n--;
         let newN = n;
-        console.log(`newN is:" ${newN}`);
+        // console.log(`newN is:" ${newN}`);
         this.heapifyDown(newN);
     }
 

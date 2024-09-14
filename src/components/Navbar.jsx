@@ -7,7 +7,7 @@ export default function Navbar(props) {
     return (
         <nav>
             <h1 className="nav-title">Route Explorer</h1>
-            <h3 className="nav-text">Dijkstra's algorithm</h3>
+            <h3 className="nav-text">A* search algorithm</h3>
             <fieldset className="nav-radio-field">
                 <input 
                     type="radio"
