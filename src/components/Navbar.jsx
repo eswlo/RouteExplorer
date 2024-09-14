@@ -17,7 +17,7 @@ export default function Navbar(props) {
                     onChange={() => props.handleRadioChange("setStart")}
                     defaultChecked 
                 />
-                <label className="nav-radio-label" htmlFor="setStart">Set start node</label>
+                <label className="nav-radio-label" htmlFor="setStart">Set start cell</label>
                 <br />
                 
                 <input 
@@ -27,7 +27,7 @@ export default function Navbar(props) {
                     value="setEnd"
                     onChange={() => props.handleRadioChange("setEnd")}
                 />
-                <label className="nav-radio-label" htmlFor="setEnd">Set end node</label>
+                <label className="nav-radio-label" htmlFor="setEnd">Set end cell</label>
                 <br />
                 
                 <input 
@@ -37,7 +37,7 @@ export default function Navbar(props) {
                     value="setBarriers"
                     onChange={() => props.handleRadioChange("setBarriers")}
                 />
-                <label className="nav-radio-label" htmlFor="setBarriers">Set barrier node(s)</label>
+                <label className="nav-radio-label" htmlFor="setBarriers">Set barrier cell(s)</label>
                 <br />
         
             </fieldset>

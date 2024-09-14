@@ -9,6 +9,7 @@ export default function Grid(props) {
     const WIDTH = 100;
     const HEIGHT = 40;
     const DEFAULTCOLOR = "white";
+    const DEFAULTSTATE = "";
     const STARTCOLOR = "red";
     const ENDCOLOR = "blue";
     const BARRIERCOLOR = "black";
@@ -18,8 +19,8 @@ export default function Grid(props) {
     const [grid, setGrid] = useState(createNewGrid());
     const [doneSearch, setDoneSearch] = React.useState(false); // set True if search is finalized 
     const [isMouseDown, setIsMouseDown] = useState(false);
-    const [isStartSet, setStart] = useState(false);
-    const [isEndSet, setEnd] = useState(false);
+    const [startCell, setStartCell] = useState(null); 
+    const [endCell, setEndCell] = useState(null);
 
 
     function updateGrid(cell, newState, newColor) {
@@ -45,23 +46,21 @@ export default function Grid(props) {
         let newColor = "";
         let newState = "";
         if (props.radioState === "setStart") {
-            if (!isStartSet) {
-                newState = "start";
-                newColor = STARTCOLOR;
-                setStart(true);
-                updateGrid(cell, newState, newColor);
-            } else {
-                return
+            newState = "start";
+            newColor = STARTCOLOR;
+            if (startCell !== null) {
+                updateGrid(startCell, DEFAULTSTATE, DEFAULTCOLOR);
             }
+            setStartCell(cell);
+            updateGrid(cell, newState, newColor);
         } else if (props.radioState === "setEnd") {
-            if (!isEndSet) {
-                newState = "end";
-                newColor = ENDCOLOR;
-                setEnd(true);
-                updateGrid(cell, newState, newColor);
-            } else {
-                return
+            newState = "end";
+            newColor = ENDCOLOR;
+            if (endCell !== null) {
+                updateGrid(endCell, DEFAULTSTATE, DEFAULTCOLOR);
             }
+            setEndCell(cell);
+            updateGrid(cell, newState, newColor);
         } else {
             newColor = BARRIERCOLOR;
             newState = "barriers";
@@ -96,7 +95,7 @@ export default function Grid(props) {
         id: nanoid(),
         x: x,
         y: y, 
-        state: "", // 5 states: start, end, barrier
+        state: DEFAULTSTATE, // 4 states: start, end, barrier, and default (blank)
         color: DEFAULTCOLOR,
         visited: false,
         prev: null // set it later, eg {x: 1, y: 2} 
