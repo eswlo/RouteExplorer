@@ -1,5 +1,5 @@
-import squaredDistanceBetweenPoints from './distanceBetweenPoints';
-import { QUEUECOLOR,VISITEDCOLOR, PATHCOLOR} from './constants';
+import squaredDistance from './squaredDistance';
+import * as CONSTANTS from './constants';
 
 function getNeighborCellsArr(curr, grid) {
     const row = curr.y;
@@ -26,32 +26,54 @@ function getNeighborCellsArr(curr, grid) {
 } 
 
 
-function pushQueueAndRender(cell, queue, updateGrid) {
+function pushToQueueAndRender(cell, queue, updateGrid) {
     queue.push(cell);
     heapify(queue);
     updateGrid(cell);
 }
 
+function addToSetAndRender(cell, visitedSet, updateGrid) {
+    if (cell.state !== CONSTANTS.STARTSTATE && cell.state !== CONSTANTS.ENDSTATE) {
+        cell.color = CONSTANTS.VISITEDCOLOR;
+    }
+    visitedSet.add(cell);
+    updateGrid(cell);
+}
+
+function calculateCosts(cell, startCell, endCell) {
+    if (cell.g === null) {
+        cell.g = squaredDistance(cell, startCell);
+        cell.h = squaredDistance(cell, endCell);
+        cell.f = cell.g + cell.h;
+    } else {
+        cell.g = Math.min(cell.g, cell.prev.g + squaredDistance(cell, cell.prev));
+        cell.f = cell.g + cell.h;
+    }
+}
+
+
 export default function aStart(startCell, endCell, grid, updateGrid) {
     const queue = [];
     const visitedSet = new Set();
 
-    pushQueueAndRender(startCell, queue, updateGrid);
+    pushToQueueAndRender(startCell, queue, updateGrid);
 
     while (queue) {
         const curr = heapPop(queue); // pop the cell with lowest f cost
-        visitedSet.add(curr);
+        addToSetAndRender(curr, visitedSet, updateGrid);
         if (curr.x === endCell.x && curr.y == endCell.y) {
             return drawPath();
         } else {
             const neighborCellsArr = getNeighborCellsArr(curr, grid);
             neighborCellsArr.forEach((nc) => {
-                if (nc.state !== "barrier" && !visitedSet.has(nc)) {
-                    // set/update g cost, set h cost, and set/update f cost
-                    //set prev
-                    //set color and state = 
+                if (nc.state !== CONSTANTS.BARRIERSTATE && !visitedSet.has(nc)) {
+                    nc.prev = curr;
+                    if (nc.state !== CONSTANTS.ENDSTATE) {
+                        nc.color = CONSTANTS.QUEUECOLOR;
+                    }
+                    calculateCosts(nc, startCell, endCell);
                     if (!queue.includes(nc)) {
-                        pushQueueAndRender(nc, queue, updateGrid);
+                        pushToQueueAndRender(nc, queue, updateGrid);
                     }
                 }
             })

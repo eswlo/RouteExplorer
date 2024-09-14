@@ -118,7 +118,7 @@ export default function Grid(props) {
         state: DEFAULTSTATE, // 4 states: start, end, barrier, and default (blank)
         color: DEFAULTCOLOR,
         visited: false,
-        prev: null, // set it later, eg {x: 1, y: 2} 
+        prev: null, // set the parent cell leter during search
         gCost: Infinity,
         hCost: Infinity,
         fCost: Infinity
