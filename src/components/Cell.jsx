@@ -1,4 +1,7 @@
 import React from "react"
+import PropTypes from 'prop-types';
+import * as CONSTANTS from '../utils/constants';
+
 
 // memoizes the rendering of the functional component cell to avoide unnecessary re-renders.
 const Cell = React.memo((props) => {
@@ -7,7 +10,7 @@ const Cell = React.memo((props) => {
     let cellHeight = "0.8rem";
     let cellWidth = "0.8rem";
 
-    if (props.cell.state === "start" || props.cell.state === "end") {
+    if (props.cell.state === CONSTANTS.STARTSTATE || props.cell.state === CONSTANTS.ENDSTATE) {
         cellBorderRadius = "30px";
     } 
 
@@ -31,6 +34,17 @@ const Cell = React.memo((props) => {
 });
 
 Cell.displayName = 'Cell';
+
+Cell.propTypes = {
+    cell: PropTypes.shape({
+        state: PropTypes.oneOf([CONSTANTS.STARTSTATE, CONSTANTS.ENDSTATE]).isRequired,
+        color: PropTypes.string.isRequired
+    }).isRequired,
+    onMouseDown: PropTypes.func,
+    onMouseUp: PropTypes.func,
+    onMouseOver: PropTypes.func
+};
+
 export default Cell;
 
 

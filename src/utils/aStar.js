@@ -67,7 +67,7 @@ function setNeighborCellCosts(curr, neighbor, startCell, endCell) {
     }
 }
 
-function getAndDrawPath(cell, startCell, updateGrid) {
+function getAndDrawPath(cell, startCell, endCell, updateGrid) {
     const path = [];
     let curr = cell;
     while (curr.id !== startCell.id) {
@@ -77,8 +77,10 @@ function getAndDrawPath(cell, startCell, updateGrid) {
     }
     path.unshift(curr);
     path.forEach((cell) => {
-        cell.color = CONSTANTS.PATHCOLOR;
-        updateGrid(cell);
+        if (cell.id !== startCell.id && cell.id !== endCell.id) {
+            cell.color = CONSTANTS.PATHCOLOR;
+            updateGrid(cell);
+        }
     })
 }
 
@@ -109,7 +111,7 @@ export default async function aStar(startCell, endCell, grid, updateGrid) {
         const curr = queue.heapPop(); // pop the cell with lowest f cost
         addToSetAndRender(curr, visitedSet, updateGrid);
         if (curr.id === endCell.id) {
-            return getAndDrawPath(curr, startCell, updateGrid);
+            return getAndDrawPath(curr, startCell, endCell, updateGrid);
         } else {
             const neighborCellsArr = getNeighborCellsArr(curr, grid);
             for (const nc of neighborCellsArr) {
