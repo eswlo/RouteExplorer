@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { nanoid } from "nanoid"
 import Cell from "./Cell"
 import PropTypes from 'prop-types';
+import aStar from '../utils/aStar';
 import { 
     WIDTH, 
     HEIGHT, 
@@ -165,6 +166,7 @@ export default function Grid(props) {
     return (
         <div className="grid" style={gridStyle}>
             {cellElements}  
+            <button onClick={() => aStar(startCell, endCell, grid, updateGrid)}>test</button>
         </div>
     )
 }

@@ -32,13 +32,12 @@ class MinHeap {
     }
 
     swap(idx1, idx2) {
-        let temp = this.queue[idx1];
-        this.queue[idx1] = this.queue[idx2];
-        this.queue[idx2] = temp;
+        if (idx1 === idx2) return; // No need to swap if the indices are the same
+        [this.queue[idx1], this.queue[idx2]] = [this.queue[idx2], this.queue[idx1]]; // Swap using destructuring assignment
     }
 
     heapifyDown(currentIdx) {
-        const n = currentIdx;
+        let n = currentIdx;
         const root_n = this.root();
 
         if (n < root_n) {
@@ -80,6 +79,7 @@ class MinHeap {
         }
         n--;
         let newN = n;
+        console.log(`newN is:" ${newN}`);
         this.heapifyDown(newN);
     }
 
@@ -95,7 +95,7 @@ class MinHeap {
     }
 
     heapPop() {
-        if (this.queue.length === 0) return null;
+        if (this.isEmpty()) return null;
         const n = Math.floor((this.queue.length) / 2);
         this.heapifyDown(n);
         const ret = this.queue[0];
@@ -110,6 +110,14 @@ class MinHeap {
         this.queue.push(cell);
         const currI = this.queue.length - 1;
         this.heapifyUp(currI);
+    }
+
+    contains(item) {
+        return this.queue.includes(item);
+    }
+
+    isEmpty() {
+        return this.queue.length === 0;
     }
 }
 

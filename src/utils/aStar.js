@@ -13,9 +13,21 @@ function getNeighborCellsArr(curr, grid) {
 
     if (colLeft >= 0) {
         arr.push(grid[row][colLeft]);
+        if (rowUp >= 0) {
+            arr.push(grid[rowUp][colLeft]);
+        }
+        if (rowDown < grid.length) {
+            arr.push(grid[rowDown][colLeft]);
+        }
     }
     if (colRight < grid[0].length) {
         arr.push(grid[row][colRight]);
+        if (rowUp >= 0) {
+            arr.push(grid[rowUp][colRight]);
+        }
+        if (rowDown < grid.length) {
+            arr.push(grid[rowDown][colRight]);
+        }
     }
     if (rowUp >= 0) {
         arr.push(grid[rowUp][col]);
@@ -65,13 +77,16 @@ function getAndDrawPath(cell, startCell, updateGrid) {
     })
 }
 
-export default function aStart(startCell, endCell, grid, updateGrid) {
+export default async function aStar(startCell, endCell, grid, updateGrid) {
     const queue = new MinHeap();
     const visitedSet = new Set();
 
     pushToQueueAndRender(startCell, queue, updateGrid);
 
-    while (queue) {
+    while (!queue.isEmpty()) {
+
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second for each loop
+
         const curr = queue.heapPop(); // pop the cell with lowest f cost
         addToSetAndRender(curr, visitedSet, updateGrid);
         if (curr.x === endCell.x && curr.y == endCell.y) {
@@ -85,7 +100,7 @@ export default function aStart(startCell, endCell, grid, updateGrid) {
                         nc.color = CONSTANTS.QUEUECOLOR;
                     }
                     calculateCosts(nc, startCell, endCell);
-                    if (!queue.includes(nc)) {
+                    if (!queue.contains(nc)) {
                         pushToQueueAndRender(nc, queue, updateGrid);
                     }
                 }
