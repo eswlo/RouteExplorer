@@ -51,6 +51,19 @@ function calculateCosts(cell, startCell, endCell) {
     }
 }
 
+function getAndDrawPath(cell, startCell, updateGrid) {
+    const path = [];
+    let curr = cell;
+    while (curr.x != startCell.x && curr.y != startCell.y) {
+        path.unshift(curr);
+        curr = curr.prev;
+    }
+    path.unshift(curr);
+    path.forEach((cell) => {
+        cell.color = CONSTANTS.PATHCOLOR;
+        updateGrid(cell);
+    })
+}
 
 export default function aStart(startCell, endCell, grid, updateGrid) {
     const queue = [];
@@ -62,7 +75,7 @@ export default function aStart(startCell, endCell, grid, updateGrid) {
         const curr = heapPop(queue); // pop the cell with lowest f cost
         addToSetAndRender(curr, visitedSet, updateGrid);
         if (curr.x === endCell.x && curr.y == endCell.y) {
-            return drawPath();
+            return getAndDrawPath(curr, startCell, updateGrid);
         } else {
             const neighborCellsArr = getNeighborCellsArr(curr, grid);
             neighborCellsArr.forEach((nc) => {
