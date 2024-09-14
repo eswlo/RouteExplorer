@@ -25,22 +25,12 @@ export default function Grid(props) {
 
     function updateGrid(cell, newState, newColor) {
         setGrid((prevGrid) => {
-            return (
-                prevGrid.map((oldCell) => {
-                    if (oldCell.x == cell.x && oldCell.y == cell.y) {
-                        return ({
-                            ...oldCell,
-                            state: newState,
-                            color: newColor
-                        })
-                    } else {
-                        return oldCell
-                    }
-                })
-            )
+            const newGrid = prevGrid.map(row => [...row]);
+            newGrid[cell.y][cell.x].state = newState; // note that x indicates which col, and y indicates which row
+            newGrid[cell.y][cell.x].color = newColor;
+            return newGrid;
         })
     }
-
 
     function setNewStateAndColor(cell) {
         let newColor = "";
@@ -80,7 +70,7 @@ export default function Grid(props) {
     }, [isMouseDown, props.radioState]);
 
     const handleMouseOver = useCallback((cell) => {
-        // console.log("over");
+        // console.log(cell.x, cell.y);
 
         if (isMouseDown && props.radioState === "setBarriers") {
             setNewStateAndColor(cell);
@@ -106,30 +96,36 @@ export default function Grid(props) {
     function createNewGrid() {
         const newGrid = [];
         for (let y = 0; y < HEIGHT; y++) {
+            const row = [];
             for (let x = 0; x < WIDTH; x++) {
-                newGrid.push(createNewCell(x, y));
+                row.push(createNewCell(x, y));
             }
+            newGrid.push(row);
         }
         return newGrid;
     }
 
     // map all cells in grid to Cell component
-    const cellElements = grid.map((cell) => {
+    const cellElements = grid.map((row) => {
         return (
-            <Cell 
-            key={cell.id}
-            cell={cell}
-            onMouseUp={handleMouseUp}
-            onMouseDown={() => handleMouseDown(cell)}
-            onMouseOver={() => handleMouseOver(cell)}
-            />
+            row.map((cell) => {
+                return (
+                    <Cell 
+                    key={cell.id}
+                    cell={cell}
+                    onMouseUp={handleMouseUp}
+                    onMouseDown={() => handleMouseDown(cell)}
+                    onMouseOver={() => handleMouseOver(cell)}
+                    />
+                ) 
+            })
         )
     })
 
     // define css style for grid
     const gridStyle = {
         display: 'grid',
-        gridTemplate: `auto auto / repeat(${WIDTH}, 1fr)`,
+        gridTemplate: `repeat(${HEIGHT}, auto) / repeat(${WIDTH}, 1fr)`,
         gap: '0px',
     }
 
