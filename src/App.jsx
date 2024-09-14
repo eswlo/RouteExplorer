@@ -4,8 +4,13 @@ import Main from './components/Main'
 
 export default function App() {
 
-  const [isExploring, setIsExplore] = useState(false);
+  const [canExplore, setCanExplore] = useState(false);
   const [radioState, setRadioState] = useState("setStart")
+
+  function handleExplore() {
+    // console.log("handleExplore");
+    setCanExplore(true);
+  }
 
   function handleRadioChange(newRadioState) {
     // console.log(newRadioState);
@@ -14,8 +19,14 @@ export default function App() {
 
   return (
     <div>
-          <Navbar handleRadioChange={handleRadioChange}/>
-          <Main radioState={radioState}/>
+          <Navbar 
+            handleRadioChange={handleRadioChange}
+            handleExplore={handleExplore}
+            />
+          <Main 
+            radioState={radioState}
+            canExplore={canExplore}
+          />
     </div>
   )
 }

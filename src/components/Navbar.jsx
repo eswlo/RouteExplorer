@@ -41,11 +41,14 @@ export default function Navbar(props) {
                 <br />
         
             </fieldset>
-            <button className="nav-explore-btn">Explore</button>
+            <button className="nav-explore-btn"
+                    onClick={props.handleExplore}
+            >Explore</button>
         </nav>
     )
 }
 
 Navbar.propTypes = {
     handleRadioChange: PropTypes.func.isRequired, // Validate that it is a function
+    handleExplore: PropTypes.func.isRequired
 };

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react"
+import React, { useCallback, useEffect } from "react"
 import { useState } from 'react'
 import { nanoid } from "nanoid"
 import Cell from "./Cell"
@@ -26,6 +26,12 @@ export default function Grid(props) {
     const [isMouseDown, setIsMouseDown] = useState(false);
     const [startCell, setStartCell] = useState(null); 
     const [endCell, setEndCell] = useState(null);
+
+    useEffect(() => {
+        if (props.canExplore) {
+            aStar(startCell, endCell, grid, updateGrid)
+        }
+    }, [props.canExplore]);
 
 
     function updateGrid(cell) {
@@ -188,11 +194,11 @@ export default function Grid(props) {
     return (
         <div className="grid" style={gridStyle}>
             {cellElements}  
-            <button onClick={() => aStar(startCell, endCell, grid, updateGrid)}>test</button>
         </div>
     )
 }
 
 Grid.propTypes = {
     radioState: PropTypes.string.isRequired,
+    canExplore: PropTypes.bool.isRequired
 };

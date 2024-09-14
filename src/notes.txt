@@ -1,3 +1,4 @@
+- make explore button work
 - add delay setter
 - add reset button
 - add explore state, make sure only explore when both start and end are set, and can't add/change nodes when exploring

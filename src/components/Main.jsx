@@ -6,11 +6,15 @@ import Grid from "./Grid"
 export default function Main(props) {
     return (
         <main>
-            <Grid radioState={props.radioState}/>
+            <Grid 
+                radioState={props.radioState}
+                canExplore={props.canExplore}
+            />
         </main>
     )
 }
 
 Main.propTypes = {
     radioState: PropTypes.string.isRequired,
+    canExplore: PropTypes.bool.isRequired
 };
