@@ -1,5 +1,6 @@
 import squaredDistance from './squaredDistance';
 import * as CONSTANTS from './constants';
+import { MinHeap } from './minHeap';
 
 function getNeighborCellsArr(curr, grid) {
     const row = curr.y;
@@ -27,8 +28,7 @@ function getNeighborCellsArr(curr, grid) {
 
 
 function pushToQueueAndRender(cell, queue, updateGrid) {
-    queue.push(cell);
-    heapify(queue);
+    queue.heapPush(cell);
     updateGrid(cell);
 }
 
@@ -66,13 +66,13 @@ function getAndDrawPath(cell, startCell, updateGrid) {
 }
 
 export default function aStart(startCell, endCell, grid, updateGrid) {
-    const queue = [];
+    const queue = new MinHeap();
     const visitedSet = new Set();
 
     pushToQueueAndRender(startCell, queue, updateGrid);
 
     while (queue) {
-        const curr = heapPop(queue); // pop the cell with lowest f cost
+        const curr = queue.heapPop(); // pop the cell with lowest f cost
         addToSetAndRender(curr, visitedSet, updateGrid);
         if (curr.x === endCell.x && curr.y == endCell.y) {
             return getAndDrawPath(curr, startCell, updateGrid);

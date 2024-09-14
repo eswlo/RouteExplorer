@@ -119,9 +119,9 @@ export default function Grid(props) {
         color: DEFAULTCOLOR,
         visited: false,
         prev: null, // set the parent cell leter during search
-        gCost: Infinity,
-        hCost: Infinity,
-        fCost: Infinity
+        g: Infinity,
+        h: Infinity,
+        f: Infinity
         })
     }
 
