@@ -9,9 +9,11 @@ const Cell = React.memo((props) => {
     let cellBorderRadius = "0px";
     let cellHeight = "0.8rem";
     let cellWidth = "0.8rem";
+    let cellBorder = "0.5px inset";
 
     if (props.cell.state === CONSTANTS.STARTSTATE || props.cell.state === CONSTANTS.ENDSTATE) {
         cellBorderRadius = "30px";
+        cellBorder = "2px outset"
     } 
 
     // define css style for cell
@@ -19,7 +21,8 @@ const Cell = React.memo((props) => {
         height: cellHeight,
         width: cellWidth,
         backgroundColor: props.cell.color,
-        borderRadius: cellBorderRadius
+        borderRadius: cellBorderRadius,
+        border: cellBorder
     }
 
     return (
@@ -37,7 +40,11 @@ Cell.displayName = 'Cell';
 
 Cell.propTypes = {
     cell: PropTypes.shape({
-        state: PropTypes.oneOf([CONSTANTS.STARTSTATE, CONSTANTS.ENDSTATE]).isRequired,
+        state: PropTypes.oneOf([
+            CONSTANTS.STARTSTATE, 
+            CONSTANTS.ENDSTATE,
+            CONSTANTS.DEFAULTSTATE,
+            CONSTANTS.BARRIERSTATE]).isRequired,
         color: PropTypes.string.isRequired
     }).isRequired,
     onMouseDown: PropTypes.func,

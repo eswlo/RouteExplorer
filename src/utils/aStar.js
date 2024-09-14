@@ -72,7 +72,7 @@ function getAndDrawPath(cell, startCell, endCell, updateGrid) {
     let curr = cell;
     while (curr.id !== startCell.id) {
         path.unshift(curr);
-        console.log(curr.x, curr.y);
+        // console.log(curr.x, curr.y);
         curr = curr.prev;
     }
     path.unshift(curr);

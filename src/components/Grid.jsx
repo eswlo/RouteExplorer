@@ -53,7 +53,11 @@ export default function Grid(props) {
                         color: DEFAULTCOLOR
                     });
                 }
-                setStartCell(cell);
+                setStartCell({
+                    ...cell,
+                    state: newState,
+                    color: newColor
+                });
                 updateGrid({
                     ...cell,
                     state: newState,
@@ -71,7 +75,11 @@ export default function Grid(props) {
                         color: DEFAULTCOLOR
                     });            
                 }
-                setEndCell(cell);
+                setEndCell({
+                    ...cell,
+                    state: newState,
+                    color: newColor
+                });
                 updateGrid({
                     ...cell,
                     state: newState,

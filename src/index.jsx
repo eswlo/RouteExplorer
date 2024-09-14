@@ -10,8 +10,6 @@ import App from './App.jsx'
 //   </StrictMode>,
 // )
 
-
-
 // for production
 createRoot(document.getElementById('root')).render(
   <App />

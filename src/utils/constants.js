@@ -1,16 +1,20 @@
 const WIDTH = 100;
 const HEIGHT = 40;
-const DEFAULTCOLOR = "white";
+
+// STATES
 const DEFAULTSTATE = "";
 const STARTSTATE = "start";
 const ENDSTATE = "end";
 const BARRIERSTATE = "barrier";
-const STARTCOLOR = "red";
-const ENDCOLOR = "blue";
-const BARRIERCOLOR = "black";
-const QUEUECOLOR = "yellow";
-const VISITEDCOLOR = "purple";
-const PATHCOLOR = "green";
+
+// COLORS
+const DEFAULTCOLOR = "#fffffc";
+const STARTCOLOR = "#566263";
+const ENDCOLOR = "#76819c";
+const BARRIERCOLOR = "#b48a47";
+const QUEUECOLOR = "#f3c6b3";
+const VISITEDCOLOR = "#bfcdcc";
+const PATHCOLOR = "#364765";
 
 export {
     WIDTH,
