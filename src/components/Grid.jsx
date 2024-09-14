@@ -3,18 +3,22 @@ import { useState } from 'react'
 import { nanoid } from "nanoid"
 import Cell from "./Cell"
 import PropTypes from 'prop-types';
+import { 
+    WIDTH, 
+    HEIGHT, 
+    DEFAULTCOLOR, 
+    DEFAULTSTATE, 
+    STARTSTATE,
+    ENDSTATE,
+    BARRIERSTATE,
+    STARTCOLOR, 
+    ENDCOLOR, 
+    BARRIERCOLOR, } from '../utils/constants';
+
+
 
 // a function that generate a grid
 export default function Grid(props) {
-    const WIDTH = 100;
-    const HEIGHT = 40;
-    const DEFAULTCOLOR = "white";
-    const DEFAULTSTATE = "";
-    const STARTCOLOR = "red";
-    const ENDCOLOR = "blue";
-    const BARRIERCOLOR = "black";
-    const VISITEDCOLOR = "purple";
-    const PATHCOLOR = "green";
 
     const [grid, setGrid] = useState(createNewGrid());
     const [doneSearch, setDoneSearch] = React.useState(false); // set True if search is finalized 
@@ -23,11 +27,13 @@ export default function Grid(props) {
     const [endCell, setEndCell] = useState(null);
 
 
-    function updateGrid(cell, newState, newColor) {
+    function updateGrid(cell) {
         setGrid((prevGrid) => {
-            const newGrid = prevGrid.map(row => [...row]);
-            newGrid[cell.y][cell.x].state = newState; // note that x indicates which col, and y indicates which row
-            newGrid[cell.y][cell.x].color = newColor;
+            const newGrid = prevGrid.map(row => [...row]); // deep copy
+            // note that x indicates which col, and y indicates which row
+            const row = cell.y;
+            const col = cell.x;
+            newGrid[row][col] = cell;
             return newGrid;
         })
     }
@@ -36,26 +42,50 @@ export default function Grid(props) {
         let newColor = "";
         let newState = "";
         if (props.radioState === "setStart") {
-            newState = "start";
+            newState = STARTSTATE;
             newColor = STARTCOLOR;
-            if (startCell !== null) {
-                updateGrid(startCell, DEFAULTSTATE, DEFAULTCOLOR);
+            if (cell.state !== ENDSTATE) {
+                if (startCell !== null) {
+                    updateGrid({
+                        ...startCell,
+                        state: DEFAULTSTATE,
+                        color: DEFAULTCOLOR
+                    });
+                }
+                setStartCell(cell);
+                updateGrid({
+                    ...cell,
+                    state: newState,
+                    color: newColor
+                });
             }
-            setStartCell(cell);
-            updateGrid(cell, newState, newColor);
         } else if (props.radioState === "setEnd") {
-            newState = "end";
+            newState = ENDSTATE;
             newColor = ENDCOLOR;
-            if (endCell !== null) {
-                updateGrid(endCell, DEFAULTSTATE, DEFAULTCOLOR);
+            if (cell.state !== STARTSTATE) {
+                if (endCell !== null) {
+                    updateGrid({
+                        ...endCell,
+                        state: DEFAULTSTATE,
+                        color: DEFAULTCOLOR
+                    });            
+                }
+                setEndCell(cell);
+                updateGrid({
+                    ...cell,
+                    state: newState,
+                    color: newColor
+                });
             }
-            setEndCell(cell);
-            updateGrid(cell, newState, newColor);
         } else {
             newColor = BARRIERCOLOR;
-            newState = "barriers";
-            if (cell.state === "") {
-                updateGrid(cell, newState, newColor);
+            newState = BARRIERSTATE;
+            if (cell.state === DEFAULTSTATE) {
+                updateGrid({
+                    ...cell,
+                    state: newState,
+                    color: newColor
+                });              
             }
         }
     }
@@ -88,7 +118,10 @@ export default function Grid(props) {
         state: DEFAULTSTATE, // 4 states: start, end, barrier, and default (blank)
         color: DEFAULTCOLOR,
         visited: false,
-        prev: null // set it later, eg {x: 1, y: 2} 
+        prev: null, // set it later, eg {x: 1, y: 2} 
+        gCost: Infinity,
+        hCost: Infinity,
+        fCost: Infinity
         })
     }
 
