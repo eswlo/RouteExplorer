@@ -1,4 +1,6 @@
-import React from "react"
+// import React from "react"
+import PropTypes from 'prop-types';
+
 
 // a function that handle navbar
 export default function Navbar(props) {
@@ -15,7 +17,7 @@ export default function Navbar(props) {
                     onChange={() => props.handleRadioChange("setStart")}
                     defaultChecked 
                 />
-                <label className="nav-radio-label" htmlFor="setStart">Set One Start (by clicking a cell)</label>
+                <label className="nav-radio-label" htmlFor="setStart">Set start node</label>
                 <br />
                 
                 <input 
@@ -25,7 +27,7 @@ export default function Navbar(props) {
                     value="setEnd"
                     onChange={() => props.handleRadioChange("setEnd")}
                 />
-                <label className="nav-radio-label" htmlFor="setEnd">Set One End (by clicking a cell)</label>
+                <label className="nav-radio-label" htmlFor="setEnd">Set end node</label>
                 <br />
                 
                 <input 
@@ -35,7 +37,7 @@ export default function Navbar(props) {
                     value="setBarriers"
                     onChange={() => props.handleRadioChange("setBarriers")}
                 />
-                <label className="nav-radio-label" htmlFor="setBarriers">Set Barriers (by dragging over cells)</label>
+                <label className="nav-radio-label" htmlFor="setBarriers">Set barrier node(s)</label>
                 <br />
         
             </fieldset>
@@ -43,3 +45,7 @@ export default function Navbar(props) {
         </nav>
     )
 }
+
+Navbar.propTypes = {
+    handleRadioChange: PropTypes.func.isRequired, // Validate that it is a function
+};

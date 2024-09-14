@@ -2,6 +2,7 @@ import React, { useCallback } from "react"
 import { useState } from 'react'
 import { nanoid } from "nanoid"
 import Cell from "./Cell"
+import PropTypes from 'prop-types';
 
 // a function that generate a grid
 export default function Grid(props) {
@@ -95,8 +96,10 @@ export default function Grid(props) {
         id: nanoid(),
         x: x,
         y: y, 
-        state: "", // 5 states: start, end, barrier, visited, path
-        color: DEFAULTCOLOR
+        state: "", // 5 states: start, end, barrier
+        color: DEFAULTCOLOR,
+        visited: false,
+        prev: null // set it later, eg {x: 1, y: 2} 
         })
     }
 
@@ -137,3 +140,7 @@ export default function Grid(props) {
         </div>
     )
 }
+
+Grid.propTypes = {
+    radioState: PropTypes.string.isRequired,
+};
