@@ -4,6 +4,7 @@ import { nanoid } from "nanoid"
 import Cell from "./Cell"
 import PropTypes from 'prop-types';
 import aStar from '../utils/aStar';
+import dfs from "../utils/dfs";
 import { 
     WIDTH, 
     HEIGHT, 
@@ -29,7 +30,8 @@ export default function Grid(props) {
 
     useEffect(() => {
         if (props.canExplore && startCell && endCell) {
-            aStar(startCell, endCell, grid, updateGrid)
+            // aStar(startCell, endCell, grid, updateGrid);
+            dfs(startCell, endCell, grid, updateGrid);
         } else {
             props.setCanExplore(false);
         }
@@ -43,7 +45,7 @@ export default function Grid(props) {
             cellArray.forEach((cell) => {
                 const row = cell.y;
                 const col = cell.x;
-                newGrid[row][col] = cell;
+                newGrid[row][col] = {...cell};
             });
             return newGrid;
         })
