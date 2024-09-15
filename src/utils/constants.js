@@ -12,9 +12,9 @@ const DEFAULTCOLOR = "#fffffe";
 const STARTCOLOR = "yellow"; 
 const ENDCOLOR = "yellow";
 const PATHCOLOR = STARTCOLOR;
-const BARRIERCOLOR = "#AEA34B";
+const BARRIERCOLOR = "#4e6e62";
 const QUEUECOLOR = "#f3c6b3";
-const VISITEDCOLOR = "#76819c";
+const VISITEDCOLOR = "#8e9bae";
 
 export {
     WIDTH,
