@@ -34,13 +34,15 @@ export default function Grid(props) {
     }, [props.canExplore]);
 
 
-    function updateGrid(cell) {
+    function updateGrid(cellArray) {
         setGrid((prevGrid) => {
             const newGrid = prevGrid.map(row => [...row]); // deep copy
             // note that x indicates which col, and y indicates which row
-            const row = cell.y;
-            const col = cell.x;
-            newGrid[row][col] = cell;
+            cellArray.forEach((cell) => {
+                const row = cell.y;
+                const col = cell.x;
+                newGrid[row][col] = cell;
+            });
             return newGrid;
         })
     }
@@ -53,44 +55,44 @@ export default function Grid(props) {
             newColor = STARTCOLOR;
             if (cell.state !== ENDSTATE) {
                 if (startCell !== null) {
-                    updateGrid({
+                    updateGrid([{
                         ...startCell,
                         state: DEFAULTSTATE,
                         color: DEFAULTCOLOR
-                    });
+                    }]);
                 }
                 setStartCell({
                     ...cell,
                     state: newState,
                     color: newColor
                 });
-                updateGrid({
+                updateGrid([{
                     ...cell,
                     state: newState,
                     color: newColor
-                });
+                }]);
             }
         } else if (props.radioState === "setEnd") {
             newState = ENDSTATE;
             newColor = ENDCOLOR;
             if (cell.state !== STARTSTATE) {
                 if (endCell !== null) {
-                    updateGrid({
+                    updateGrid([{
                         ...endCell,
                         state: DEFAULTSTATE,
                         color: DEFAULTCOLOR
-                    });            
+                    }]);            
                 }
                 setEndCell({
                     ...cell,
                     state: newState,
                     color: newColor
                 });
-                updateGrid({
+                updateGrid([{
                     ...cell,
                     state: newState,
                     color: newColor
-                });
+                }]);
             }
         } else {
             // cell.state === DEFAULTSTATE 
@@ -104,17 +106,17 @@ export default function Grid(props) {
             //         color: DEFAULTCOLOR
             //     })
             if (cell.state === DEFAULTSTATE) {
-                updateGrid({
+                updateGrid([{
                     ...cell,
                     state: BARRIERSTATE,
                     color: BARRIERCOLOR
-                });              
+                }]);              
             } else if (cell.state === BARRIERSTATE) {
-                updateGrid({
+                updateGrid([{
                     ...cell,
                     state: DEFAULTSTATE,
                     color: DEFAULTCOLOR
-                });  
+                }]);  
             }
         }
     }

@@ -43,7 +43,7 @@ function pushToQueueAndRender(cell, queue, updateGrid) {
         cell.color = CONSTANTS.QUEUECOLOR;
     }
     queue.heapPush(cell);
-    updateGrid(cell);
+    updateGrid([cell]);
 }
 
 function addToSetAndRender(cell, visitedSet, updateGrid) {
@@ -51,7 +51,7 @@ function addToSetAndRender(cell, visitedSet, updateGrid) {
         cell.color = CONSTANTS.VISITEDCOLOR;
     }
     visitedSet.add(cell);
-    updateGrid(cell);
+    updateGrid([cell]);
 }
 
 function setNeighborCellCosts(curr, neighbor, startCell, endCell) {
@@ -79,9 +79,9 @@ function getAndDrawPath(cell, startCell, endCell, updateGrid) {
     path.forEach((cell) => {
         if (cell.id !== startCell.id && cell.id !== endCell.id) {
             cell.color = CONSTANTS.PATHCOLOR;
-            updateGrid(cell);
         }
     })
+    updateGrid(path);
 }
 
 
@@ -106,7 +106,7 @@ export default async function aStar(startCell, endCell, grid, updateGrid) {
 
     while (!queue.isEmpty()) {
 
-        await new Promise(resolve => setTimeout(resolve, 10)); // Wait for certain seconds for each loop
+        await new Promise(resolve => setTimeout(resolve, 5)); // Wait for certain amount of tiie between each loop
 
         const curr = queue.heapPop(); // pop the cell with lowest f cost
         addToSetAndRender(curr, visitedSet, updateGrid);
