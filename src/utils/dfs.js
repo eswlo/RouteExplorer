@@ -56,8 +56,8 @@ function retoreTempPath(restorePath, startCell, updateGrid) {
             cell.color = CONSTANTS.VISITEDCOLOR;
         }
     });
-    console.log('restorePath');
-    console.log(restorePath);
+    // console.log('restorePath');
+    // console.log(restorePath);
     updateGrid(restorePath);
 }
 
@@ -69,18 +69,18 @@ function drawTempPath(path, startCell, updateGrid) {
     tempPath = [...path];
     tempPath.forEach((cell) => {
         if (cell.id !== startCell.id) {
-            cell.color = CONSTANTS.QUEUECOLOR;
+            cell.color = CONSTANTS.PATHCOLOR;
         }
     })
-    console.log('tempPath');
-    console.log(tempPath);
+    // console.log('tempPath');
+    // console.log(tempPath);
     updateGrid(tempPath);
 }
 
 
 
 function drawFinalPath(finalPath, startCell, endCell, updateGrid) {
-    console.log("drawFinalPath");
+    // console.log("drawFinalPath");
     finalPath.forEach((cell) => {
         if (cell.id !== startCell.id && cell.id !== endCell.id) {
             cell.color = CONSTANTS.PATHCOLOR;
@@ -104,15 +104,15 @@ function shuffleArray(array) {
 
 async function dfs(startCell, endCell, grid, updateGrid, isRandomized) {
     const pathStack = [];
-    console.log(endCell);
+    // console.log(endCell);
     pathStack.unshift([startCell]);
     visitedSet.add(startCell);
     while (pathStack.length !== 0) {
         await new Promise(resolve => setTimeout(resolve, 0)); // Wait for certain amount of tiie between each loop
 
         const path = pathStack.shift();
-        console.log(`path`);
-        console.log(path); 
+        // console.log(`path`);
+        // console.log(path); 
         const pathSize = path.length;
         const curr = path[pathSize - 1];
         drawTempPath(path, startCell, updateGrid);
@@ -126,6 +126,9 @@ async function dfs(startCell, endCell, grid, updateGrid, isRandomized) {
             }
             neighborCellsArr.forEach((nc) => {
                 if (!visitedSet.has(nc)) {
+                    if (nc.state !== CONSTANTS.STARTSTATE && nc.state !== CONSTANTS.ENDSTATE) {
+                        nc.color = CONSTANTS.QUEUECOLOR;
+                    }
                     const newPath = [...path];
                     newPath.push(nc);
                     visitedSet.add(nc);

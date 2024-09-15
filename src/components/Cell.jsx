@@ -11,15 +11,16 @@ const Cell = React.memo((props) => {
     let cellWidth = "0.8rem";
     let cellBorder = "0.5px inset";
 
-    if (props.cell.state === CONSTANTS.STARTSTATE || props.cell.state === CONSTANTS.ENDSTATE) {
-        cellBorderRadius = "30px";
-        cellBorder = "0px outset";
-    } 
 
     if (props.cell.color === CONSTANTS.PATHCOLOR) {
-        cellBorder = "1px outset #edc3ae";
-        cellBorderRadius = "30px";    
+        cellBorderRadius = "50%";   
+        cellBorder = "1px outset #edc3ae"; 
     }
+
+    if (props.cell.state === CONSTANTS.STARTSTATE || props.cell.state === CONSTANTS.ENDSTATE) {
+        cellBorderRadius = "5px";
+        cellBorder = "2px outset black";
+    } 
 
     // define css style for cell
     const cellStyle = {

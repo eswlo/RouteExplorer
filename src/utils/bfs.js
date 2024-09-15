@@ -96,7 +96,7 @@ function shuffleArray(array) {
 
 export default async function bfs(startCell, endCell, grid, updateGrid) {
     const pathQueue = [];
-    console.log(endCell);
+    // console.log(endCell);
     pathQueue.push([startCell]);
     visitedSet.add(startCell);
     while (pathQueue.length !== 0) {
@@ -115,6 +115,9 @@ export default async function bfs(startCell, endCell, grid, updateGrid) {
             const shuffledNeighborCellsArr = shuffleArray(neighborCellsArr);
             shuffledNeighborCellsArr.forEach((nc) => {
                 if (!visitedSet.has(nc)) {
+                    if (nc.state !== CONSTANTS.STARTSTATE && nc.state !== CONSTANTS.ENDSTATE) {
+                        nc.color = CONSTANTS.QUEUECOLOR;
+                    }
                     const newPath = [...path];
                     newPath.push(nc);
                     visitedSet.add(nc);
