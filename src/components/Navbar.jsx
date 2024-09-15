@@ -37,7 +37,7 @@ export default function Navbar(props) {
                     value="setBarriers"
                     onChange={() => props.handleRadioChange("setBarriers")}
                 />
-                <label className="nav-radio-label" htmlFor="setBarriers">Set barrier cell(s)</label>
+                <label className="nav-radio-label" htmlFor="setBarriers">Draw barrier(s)</label>
                 <br />
         
             </fieldset>

@@ -8,13 +8,13 @@ const ENDSTATE = "end";
 const BARRIERSTATE = "barrier";
 
 // COLORS
-const DEFAULTCOLOR = "#fffffc";
-const STARTCOLOR = "#566263";
-const ENDCOLOR = "#76819c";
-const BARRIERCOLOR = "#b48a47";
+const DEFAULTCOLOR = "#fffffe";
+const STARTCOLOR = "#17341E"; 
+const PATHCOLOR = STARTCOLOR;
+const ENDCOLOR = "#5C5A1C";
+const BARRIERCOLOR = "#AEA34B";
 const QUEUECOLOR = "#f3c6b3";
-const VISITEDCOLOR = "#bfcdcc";
-const PATHCOLOR = "#364765";
+const VISITEDCOLOR = "#76819c";
 
 export {
     WIDTH,

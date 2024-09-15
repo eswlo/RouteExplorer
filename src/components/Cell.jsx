@@ -13,8 +13,13 @@ const Cell = React.memo((props) => {
 
     if (props.cell.state === CONSTANTS.STARTSTATE || props.cell.state === CONSTANTS.ENDSTATE) {
         cellBorderRadius = "30px";
-        cellBorder = "2px outset"
+        cellBorder = "0px outset";
     } 
+
+    if (props.cell.color === CONSTANTS.PATHCOLOR) {
+        cellBorder = "1px outset #edc3ae";
+        cellBorderRadius = "30px";    
+    }
 
     // define css style for cell
     const cellStyle = {
