@@ -9,9 +9,9 @@ const BARRIERSTATE = "barrier";
 
 // COLORS
 const DEFAULTCOLOR = "#fffffe";
-const STARTCOLOR = "#17341E"; 
+const STARTCOLOR = "yellow"; 
+const ENDCOLOR = "yellow";
 const PATHCOLOR = STARTCOLOR;
-const ENDCOLOR = "#5C5A1C";
 const BARRIERCOLOR = "#AEA34B";
 const QUEUECOLOR = "#f3c6b3";
 const VISITEDCOLOR = "#76819c";

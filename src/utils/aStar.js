@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import * as CONSTANTS from './constants';
 import { MinHeap } from './minHeap';
+
+let tempPath = [];
 
 function getNeighborCellsArr(curr, grid) {
     const row = curr.y;
@@ -69,21 +72,50 @@ function setNeighborCellCosts(curr, neighbor, startCell, endCell) {
     }
 }
 
-function getAndDrawPath(cell, startCell, endCell, updateGrid) {
-    const path = [];
+function drawFinalPath(cell, startCell, endCell, updateGrid) {
+    const finalPath = [];
     let curr = cell;
     while (curr.id !== startCell.id) {
-        path.unshift(curr);
+        finalPath.unshift(curr);
         // console.log(curr.x, curr.y);
         curr = curr.prev;
     }
-    path.unshift(curr);
-    path.forEach((cell) => {
+    finalPath.unshift(curr);
+    finalPath.forEach((cell) => {
         if (cell.id !== startCell.id && cell.id !== endCell.id) {
             cell.color = CONSTANTS.PATHCOLOR;
         }
     })
-    updateGrid(path);
+    updateGrid(finalPath);
+}
+
+function retoreTempPath(tempPath, startCell, updateGrid) {
+    tempPath.forEach((cell) => {
+        if (cell.id !== startCell.id) {
+            cell.color = CONSTANTS.VISITEDCOLOR;
+        }
+    });
+    updateGrid(tempPath);
+}
+
+function drawTempPath(cell, startCell, updateGrid) {
+    if (tempPath.length != 0) {
+        retoreTempPath(tempPath, startCell, updateGrid);
+        tempPath = [];
+    }
+    let curr = cell;
+    while (curr.id !== startCell.id) {
+        tempPath.unshift(curr);
+        // console.log(curr.x, curr.y);
+        curr = curr.prev;
+    }
+    tempPath.unshift(curr);
+    tempPath.forEach((cell) => {
+        if (cell.id !== startCell.id) {
+            cell.color = CONSTANTS.PATHCOLOR;
+        }
+    })
+    updateGrid(tempPath);
 }
 
 
@@ -97,9 +129,11 @@ function isNewPathShorter(curr, neighbor) {
     return ((curr.g + getDistance(curr, neighbor)) < neighbor.g)
 }
 
-export default async function aStar(startCell, endCell, grid, updateGrid) {
+export default async function aStar(startCell, endCell, grid, updateGrid) {    
     const queue = new MinHeap();
     const visitedSet = new Set();
+
+    let isSearchCompleted = false;
 
     startCell.g = 0;
     startCell.h = getDistance(startCell, endCell);
@@ -112,8 +146,11 @@ export default async function aStar(startCell, endCell, grid, updateGrid) {
 
         const curr = queue.heapPop(); // pop the cell with lowest f cost
         addToSetAndRender(curr, visitedSet, updateGrid);
+        drawTempPath(curr, startCell, updateGrid);
+
         if (curr.id === endCell.id) {
-            return getAndDrawPath(curr, startCell, endCell, updateGrid);
+            isSearchCompleted  = true;
+            return drawFinalPath(curr, startCell, endCell, updateGrid);
         } else {
             const neighborCellsArr = getNeighborCellsArr(curr, grid);
             for (const nc of neighborCellsArr) {
@@ -130,6 +167,7 @@ export default async function aStar(startCell, endCell, grid, updateGrid) {
             }
         }
     }
+    isSearchCompleted  = true;
     return "No route found";
 }
 
