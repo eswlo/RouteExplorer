@@ -8,7 +8,7 @@ export default function App() {
   const [radioState, setRadioState] = useState("setStart")
 
   function handleExplore() {
-    // console.log("handleExplore");
+    console.log(`canExplore: ${canExplore}`);
     setCanExplore(true);
   }
 
@@ -26,6 +26,7 @@ export default function App() {
           <Main 
             radioState={radioState}
             canExplore={canExplore}
+            setCanExplore={setCanExplore}
           />
     </div>
   )

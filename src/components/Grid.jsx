@@ -28,8 +28,10 @@ export default function Grid(props) {
     const [endCell, setEndCell] = useState(null);
 
     useEffect(() => {
-        if (props.canExplore) {
+        if (props.canExplore && startCell && endCell) {
             aStar(startCell, endCell, grid, updateGrid)
+        } else {
+            props.setCanExplore(false);
         }
     }, [props.canExplore]);
 

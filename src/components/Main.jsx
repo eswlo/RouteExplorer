@@ -9,6 +9,7 @@ export default function Main(props) {
             <Grid 
                 radioState={props.radioState}
                 canExplore={props.canExplore}
+                setCanExplore={props.setCanExplore}
             />
         </main>
     )
