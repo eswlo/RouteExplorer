@@ -3,15 +3,6 @@ import * as CONSTANTS from './constants';
 let tempPath = [];
 const visitedSet = new Set();
 
-function standardDFS(startCell, endCell, grid, updateGrid) {
-    return dfs(startCell, endCell, grid, updateGrid, false);
-}
-
-function randomizedDFS(startCell, endCell, grid, updateGrid) {
-    return dfs(startCell, endCell, grid, updateGrid, true);
-}
-
-
 
 function getNeighborCellsArr(curr, grid) {
     const row = curr.y;
@@ -56,8 +47,8 @@ function retoreTempPath(restorePath, startCell, updateGrid) {
             cell.color = CONSTANTS.VISITEDCOLOR;
         }
     });
-    console.log('restorePath');
-    console.log(restorePath);
+    // console.log('restorePath');
+    // console.log(restorePath);
     updateGrid(restorePath);
 }
 
@@ -69,18 +60,19 @@ function drawTempPath(path, startCell, updateGrid) {
     tempPath = [...path];
     tempPath.forEach((cell) => {
         if (cell.id !== startCell.id) {
-            cell.color = CONSTANTS.QUEUECOLOR;
+            cell.color = CONSTANTS.PATHCOLOR;
         }
+        // updateGrid([cell]);
     })
-    console.log('tempPath');
-    console.log(tempPath);
+    // console.log('tempPath');
+    // console.log(tempPath);
     updateGrid(tempPath);
 }
 
 
 
 function drawFinalPath(finalPath, startCell, endCell, updateGrid) {
-    console.log("drawFinalPath");
+    // console.log("drawFinalPath");
     finalPath.forEach((cell) => {
         if (cell.id !== startCell.id && cell.id !== endCell.id) {
             cell.color = CONSTANTS.PATHCOLOR;
@@ -102,42 +94,34 @@ function shuffleArray(array) {
 }
 
 
-async function dfs(startCell, endCell, grid, updateGrid, isRandomized) {
-    const pathStack = [];
+export default async function bfs(startCell, endCell, grid, updateGrid) {
+    const pathQueue = [];
     console.log(endCell);
-    pathStack.unshift([startCell]);
+    pathQueue.push([startCell]);
     visitedSet.add(startCell);
-    while (pathStack.length !== 0) {
-        await new Promise(resolve => setTimeout(resolve, 0)); // Wait for certain amount of tiie between each loop
+    while (pathQueue.length !== 0) {
+        await new Promise(resolve => setTimeout(resolve, 50)); // Wait for certain amount of tiie between each loop
 
-        const path = pathStack.shift();
-        console.log(`path`);
-        console.log(path); 
+        const path = pathQueue.shift();
+        // console.log(`path`);
+        // console.log(path); 
         const pathSize = path.length;
         const curr = path[pathSize - 1];
         drawTempPath(path, startCell, updateGrid);
         if (curr.id === endCell.id) {
             return drawFinalPath(path, startCell, endCell, updateGrid);
         } else {
-            let neighborCellsArr = getNeighborCellsArr(curr, grid);
-            if (isRandomized) {
-                const shuffledNeighborCellsArr = shuffleArray(neighborCellsArr);
-                neighborCellsArr = [...shuffledNeighborCellsArr];
-            }
-            neighborCellsArr.forEach((nc) => {
+            const neighborCellsArr = getNeighborCellsArr(curr, grid);
+            const shuffledNeighborCellsArr = shuffleArray(neighborCellsArr);
+            shuffledNeighborCellsArr.forEach((nc) => {
                 if (!visitedSet.has(nc)) {
                     const newPath = [...path];
                     newPath.push(nc);
                     visitedSet.add(nc);
-                    pathStack.unshift(newPath);
+                    pathQueue.push(newPath);
                 }
             });
         }
     }
     return "No route found";
-}
-
-export {
-    standardDFS,
-    randomizedDFS
 }
