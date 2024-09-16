@@ -62,6 +62,5 @@ export default function Grid(props) {
 
 Grid.propTypes = {
     navRadioState: PropTypes.string.isRequired,
-    canExplore: PropTypes.bool.isRequired,
     setNewStateAndColor: PropTypes.func.isRequired
 };

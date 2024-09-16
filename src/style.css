@@ -14,9 +14,10 @@ body {
 nav {
     display: flex;
     align-items: center;
+    justify-content: center;
     background-color: #008080;
-    height: 90px;
-    padding: 30px 25px;
+    height: 120px;
+
 }
 
 .nav-title {
@@ -35,9 +36,24 @@ nav {
     font-size: 15px;
 }
 
-.nav-explore-btn {
+.btn-warning-container {
+    margin-top: 20px;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: c;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-explore-btn, .nav-reset-btn {
+    margin-left: 20px;
+    margin-right: 20px;
     background: #f5f5dc;
-    margin-left: 70px;
     border-radius: 10px;
     border: none;
     width: 100px;
@@ -47,20 +63,24 @@ nav {
     transition: all 0.2s ease;
 }
 
-.nav-explore-btn:active {
+.nav-explore-btn:active, .nav-reset-btn:active {
     background-color: #e0e0d1;
     box-shadow: 0 2px #c0c0b8;
     transform: translateY(1px);
 }
 
-.nav-explore-btn:focus {
+.nav-explore-btn:focus, .nav-reset-btn:focus {
     outline: none;
 }
 
-
+.nav-warning {
+    margin: none;
+    padding: none;
+    color: #ffffe0;
+}
 
 main {
-    padding: 25px 50px;
+    padding: 55px 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;

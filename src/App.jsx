@@ -9,39 +9,55 @@ import * as CONSTANTS from './utils/constants';
 
 
 export default function App() {
-  //// ************ states for Navbar ***************
+  // states related to navbar
   const [navRadioState, setNavRadioState] = useState("setStart")
+  const [exploreClicked, setExploreClicked] = useState(false);
+  // manage radio btn checked states
+  const [radioSelectedOption, setRadioSelectedOption] = useState("setStart");
 
-  const [canExplore, setCanExplore] = useState(false);
+  // states related to grid
+  const [grid, setGrid] = useState(createNewGrid());
+  const [startCell, setStartCell] = useState(null); 
+  const [endCell, setEndCell] = useState(null);
 
+  // functions related to navbar
   function handleExplore() {
-    console.log(`canExplore: ${canExplore}`);
-    setCanExplore(true);
+    console.log(`exploreClicked: ${exploreClicked}`);
+    if (startCell && endCell) {
+      setExploreClicked(true);
+    } else {
+      setExploreClicked(false);
+    }
+  }
+
+  function handleRest() {
+    setNavRadioState("setStart");
+    setRadioSelectedOption("setStart");
+    setExploreClicked(false);
+    setGrid(createNewGrid());
+    setStartCell(null);
+    setEndCell(null);
   }
 
   function handleRadioChange(newRadioState) {
     // console.log(newRadioState);
     setNavRadioState(newRadioState);
+    setRadioSelectedOption(newRadioState);
   }
 
 
-
-  //// FOR Main / Grid / Cell
-  const [grid, setGrid] = useState(createNewGrid());
-  const [startCell, setStartCell] = useState(null); 
-  const [endCell, setEndCell] = useState(null);
-
+  // funcsions for Main / Grid / Cell
   useEffect(() => {
-    if (canExplore && startCell && endCell) {
+    if (exploreClicked && startCell && endCell) {
         // aStar(startCell, endCell, grid, updateGrid);
         // standardDFS(startCell, endCell, grid, updateGrid);
         randomizedDFS(startCell, endCell, grid, updateGrid);
         // standardBFS(startCell, endCell, grid, updateGrid);
         // randomizedBFS(startCell, endCell, grid, updateGrid);
     } else {
-        setCanExplore(false);
+        setExploreClicked(false);
     }
-}, [canExplore]);
+  }, [exploreClicked]);
 
   function updateGrid(cellArray) {
     setGrid((prevGrid) => {
@@ -128,7 +144,7 @@ export default function App() {
             }]);  
         }
     }
-}
+  }
 
   // create and return a new cell object
   function createNewCell(x, y) {
@@ -167,10 +183,14 @@ export default function App() {
           <Navbar 
             handleRadioChange={handleRadioChange}
             handleExplore={handleExplore}
+            handleRest={handleRest}
+            radioSelectedOption={radioSelectedOption}
+            startCell={startCell}
+            endCell={endCell}
             />
           <Main 
             navRadioState={navRadioState}
-            setCanExplore={setCanExplore}
+            setCanExplore={setExploreClicked}
             setNewStateAndColor={setNewStateAndColor}
             grid={grid}
           />
