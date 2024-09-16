@@ -7,15 +7,18 @@ export default function Main(props) {
     return (
         <main>
             <Grid 
-                radioState={props.radioState}
+                navRadioState={props.navRadioState}
                 canExplore={props.canExplore}
-                setCanExplore={props.setCanExplore}
+                setNewStateAndColor={props.setNewStateAndColor}
+                grid={props.grid}
             />
         </main>
     )
 }
 
 Main.propTypes = {
-    radioState: PropTypes.string.isRequired,
-    canExplore: PropTypes.bool.isRequired
+    navRadioState: PropTypes.string.isRequired,
+    canExplore: PropTypes.bool.isRequired,
+    setNewStateAndColor: PropTypes.func.isRequired,
+    grid: PropTypes.object.isRequired
 };
