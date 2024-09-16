@@ -5,7 +5,7 @@ import Cell from "./Cell"
 import PropTypes from 'prop-types';
 import aStar from '../utils/aStar';
 import { standardDFS, randomizedDFS } from "../utils/dfs";
-import bfs from "../utils/bfs";
+import { standardBFS, randomizedBFS } from "../utils/bfs";
 import { 
     WIDTH, 
     HEIGHT, 
@@ -34,7 +34,8 @@ export default function Grid(props) {
             // aStar(startCell, endCell, grid, updateGrid);
             // standardDFS(startCell, endCell, grid, updateGrid);
             randomizedDFS(startCell, endCell, grid, updateGrid);
-            // bfs(startCell, endCell, grid, updateGrid);
+            // standardBFS(startCell, endCell, grid, updateGrid);
+            // randomizedBFS(startCell, endCell, grid, updateGrid);
         } else {
             props.setCanExplore(false);
         }

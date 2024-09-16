@@ -4,6 +4,15 @@ let tempPath = [];
 const visitedSet = new Set();
 
 
+function standardBFS(startCell, endCell, grid, updateGrid) {
+    return bfs(startCell, endCell, grid, updateGrid, false);
+}
+
+function randomizedBFS(startCell, endCell, grid, updateGrid) {
+    return bfs(startCell, endCell, grid, updateGrid, true);
+}
+
+
 function getNeighborCellsArr(curr, grid) {
     const row = curr.y;
     const col = curr.x
@@ -94,7 +103,7 @@ function shuffleArray(array) {
 }
 
 
-export default async function bfs(startCell, endCell, grid, updateGrid) {
+export default async function bfs(startCell, endCell, grid, updateGrid, isRandomized) {
     const pathQueue = [];
     // console.log(endCell);
     pathQueue.push([startCell]);
@@ -111,13 +120,16 @@ export default async function bfs(startCell, endCell, grid, updateGrid) {
         if (curr.id === endCell.id) {
             return drawFinalPath(path, startCell, endCell, updateGrid);
         } else {
-            const neighborCellsArr = getNeighborCellsArr(curr, grid);
-            const shuffledNeighborCellsArr = shuffleArray(neighborCellsArr);
-            shuffledNeighborCellsArr.forEach((nc) => {
-                if (!visitedSet.has(nc)) {
-                    if (nc.state !== CONSTANTS.STARTSTATE && nc.state !== CONSTANTS.ENDSTATE) {
+            let neighborCellsArr = getNeighborCellsArr(curr, grid);
+            if (isRandomized) {
+                const shuffledNeighborCellsArr = shuffleArray(neighborCellsArr);
+                neighborCellsArr = [...shuffledNeighborCellsArr];
+            }
+            neighborCellsArr.forEach((nc) => {
+                if (!visitedSet.has(nc) && (nc.state === CONSTANTS.DEFAULTSTATE || nc.state === CONSTANTS.ENDSTATE)) {
+                    if (nc.state === CONSTANTS.DEFAULTSTATE) {
                         nc.color = CONSTANTS.QUEUECOLOR;
-                    }
+                    }                    
                     const newPath = [...path];
                     newPath.push(nc);
                     visitedSet.add(nc);
@@ -127,4 +139,10 @@ export default async function bfs(startCell, endCell, grid, updateGrid) {
         }
     }
     return "No route found";
+}
+
+
+export {
+    standardBFS,
+    randomizedBFS
 }

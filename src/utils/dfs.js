@@ -125,8 +125,8 @@ async function dfs(startCell, endCell, grid, updateGrid, isRandomized) {
                 neighborCellsArr = [...shuffledNeighborCellsArr];
             }
             neighborCellsArr.forEach((nc) => {
-                if (!visitedSet.has(nc)) {
-                    if (nc.state !== CONSTANTS.STARTSTATE && nc.state !== CONSTANTS.ENDSTATE) {
+                if (!visitedSet.has(nc) && (nc.state === CONSTANTS.DEFAULTSTATE || nc.state === CONSTANTS.ENDSTATE)) {
+                    if (nc.state === CONSTANTS.DEFAULTSTATE) {
                         nc.color = CONSTANTS.QUEUECOLOR;
                     }
                     const newPath = [...path];

@@ -43,7 +43,7 @@ function getNeighborCellsArr(curr, grid) {
 
 function pushToQueueAndRender(cell, queue, updateGrid) {
     cell.isQueued = true;
-    if (cell.state !== CONSTANTS.STARTSTATE && cell.state !== CONSTANTS.ENDSTATE) {
+    if (cell.state === CONSTANTS.DEFAULTSTATE) {
         cell.color = CONSTANTS.QUEUECOLOR;
     }
     queue.heapPush(cell);
@@ -52,7 +52,7 @@ function pushToQueueAndRender(cell, queue, updateGrid) {
 
 function addToSetAndRender(cell, visitedSet, updateGrid) {
     cell.isVisited = true;
-    if (cell.state !== CONSTANTS.STARTSTATE && cell.state !== CONSTANTS.ENDSTATE) {
+    if (cell.state === CONSTANTS.DEFAULTSTATE) {
         cell.color = CONSTANTS.VISITEDCOLOR;
     }
     visitedSet.add(cell);
