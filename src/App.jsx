@@ -14,6 +14,7 @@ export default function App() {
   const [exploreClicked, setExploreClicked] = useState(false);
   // manage radio btn checked states
   const [radioSelectedOption, setRadioSelectedOption] = useState("setStart");
+  const [isSearchDone , setIsSearchDone] = useState(false)
 
   // states related to grid
   const [grid, setGrid] = useState(createNewGrid());
@@ -31,6 +32,7 @@ export default function App() {
   }
 
   function handleRest() {
+    setIsSearchDone(false);
     setNavRadioState("setStart");
     setRadioSelectedOption("setStart");
     setExploreClicked(false);
@@ -45,19 +47,25 @@ export default function App() {
     setRadioSelectedOption(newRadioState);
   }
 
+  const searchComplete = () => {
+    console.log("done");
+    setIsSearchDone(true);
+  }
 
   // funcsions for Main / Grid / Cell
   useEffect(() => {
     if (exploreClicked && startCell && endCell) {
-        // aStar(startCell, endCell, grid, updateGrid);
+        aStar(startCell, endCell, grid, updateGrid, searchComplete);
         // standardDFS(startCell, endCell, grid, updateGrid);
-        randomizedDFS(startCell, endCell, grid, updateGrid);
+        // randomizedDFS(startCell, endCell, grid, updateGrid);
         // standardBFS(startCell, endCell, grid, updateGrid);
         // randomizedBFS(startCell, endCell, grid, updateGrid);
     } else {
         setExploreClicked(false);
     }
   }, [exploreClicked]);
+
+
 
   function updateGrid(cellArray) {
     setGrid((prevGrid) => {
@@ -184,6 +192,7 @@ export default function App() {
             handleRadioChange={handleRadioChange}
             handleExplore={handleExplore}
             handleRest={handleRest}
+            isSearchDone={isSearchDone}
             radioSelectedOption={radioSelectedOption}
             startCell={startCell}
             endCell={endCell}

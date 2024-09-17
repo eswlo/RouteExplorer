@@ -72,7 +72,7 @@ function setNeighborCellCosts(curr, neighbor, startCell, endCell) {
     }
 }
 
-function drawFinalPath(cell, startCell, endCell, updateGrid) {
+function drawFinalPath(cell, startCell, endCell, updateGrid, searchComplete) {
     const finalPath = [];
     let curr = cell;
     while (curr.id !== startCell.id) {
@@ -86,7 +86,10 @@ function drawFinalPath(cell, startCell, endCell, updateGrid) {
             cell.color = CONSTANTS.PATHCOLOR;
         }
     })
+    tempPath = [];
     updateGrid(finalPath);
+    searchComplete();
+    return "Route Found";
 }
 
 function retoreTempPath(tempPath, startCell, updateGrid) {
@@ -129,19 +132,17 @@ function isNewPathShorter(curr, neighbor) {
     return ((curr.g + getDistance(curr, neighbor)) < neighbor.g)
 }
 
-export default async function aStar(startCell, endCell, grid, updateGrid) {    
+export default async function aStar(startCell, endCell, grid, updateGrid, searchComplete) {    
     const queue = new MinHeap();
     const visitedSet = new Set();
-
-    let isSearchCompleted = false;
 
     startCell.g = 0;
     startCell.h = getDistance(startCell, endCell);
     startCell.f = startCell.g + startCell.h;
     pushToQueueAndRender(startCell, queue, updateGrid);
 
-    while (!queue.isEmpty()) {
 
+    while (!queue.isEmpty()) {
         await new Promise(resolve => setTimeout(resolve, 5)); // Wait for certain amount of tiie between each loop
 
         const curr = queue.heapPop(); // pop the cell with lowest f cost
@@ -149,8 +150,7 @@ export default async function aStar(startCell, endCell, grid, updateGrid) {
         drawTempPath(curr, startCell, updateGrid);
 
         if (curr.id === endCell.id) {
-            isSearchCompleted  = true;
-            return drawFinalPath(curr, startCell, endCell, updateGrid);
+            return drawFinalPath(curr, startCell, endCell, updateGrid, searchComplete);
         } else {
             const neighborCellsArr = getNeighborCellsArr(curr, grid);
             for (const nc of neighborCellsArr) {
@@ -167,8 +167,7 @@ export default async function aStar(startCell, endCell, grid, updateGrid) {
             }
         }
     }
-    isSearchCompleted  = true;
-    return "No route found";
+    return "Rote Not Found"
 }
 
 

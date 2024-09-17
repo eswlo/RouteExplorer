@@ -37,7 +37,6 @@ export default function Navbar(props) {
                     value="setStart"
                     checked={props.radioSelectedOption === 'setStart'}
                     onChange={() => props.handleRadioChange("setStart")}
-                    defaultChecked 
                 />
                 <label className="nav-radio-label" htmlFor="setStart">Set start cell</label>
                 <br />
@@ -72,6 +71,7 @@ export default function Navbar(props) {
                     >Explore</button>
                     <button className="nav-reset-btn"
                         onClick={props.handleRest}
+                        disabled={!props.isSearchDone}
                     >Reset</button>
                 </div>
                 {warningMessage && <p className='nav-warning'>{warningMessage}</p>}
@@ -84,5 +84,6 @@ Navbar.propTypes = {
     handleRadioChange: PropTypes.func.isRequired, // Validate that it is a function
     handleExplore: PropTypes.func.isRequired,
     handleRest: PropTypes.func.isRequired,
-    radioSelectedOption: PropTypes.string.isRequired
+    radioSelectedOption: PropTypes.string.isRequired,
+    isSearchDone: PropTypes.bool.isRequired
 };
