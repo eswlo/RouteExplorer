@@ -38,6 +38,7 @@ export default function App() {
     setEndCell(null);
     setIsReset(true);
     setIsTerminated(false);
+    setNavSliderValue(0);
   }
 
   function handleReset() {
@@ -55,7 +56,9 @@ export default function App() {
   function handleExplore() {
     console.log(`exploreClicked: ${exploreClicked}`);
     if (startCell && endCell) {
+      console.log("set true");
       setExploreClicked(true);
+      handleRadioChange("");
     } else {
       setExploreClicked(false);
     }
@@ -96,6 +99,8 @@ export default function App() {
   // funcsions for Main / Grid / Cell
   useEffect(() => {
     if (exploreClicked && startCell && endCell) {
+      console.log("start search");
+      console.log(exploreClicked);
       if (selectedAlgo === "aStar") {
         aStar(startCell, endCell, grid, updateGrid);
       } else if (selectedAlgo === "regularDFS") {
@@ -137,9 +142,13 @@ export default function App() {
   }
 
   const setNewStateAndColor = (cell) => {
+    console.log("setnewstate");
+    console.log(exploreClicked);
+    console.log(radioSelectedOption);
     let newColor = "";
     let newState = "";
-    if (navRadioState === "setStart") {
+    if (radioSelectedOption !== "") {
+      if (navRadioState === "setStart") {
         newState = CONSTANTS.STARTSTATE;
         newColor = CONSTANTS.STARTCOLOR;
         if (cell.state !== CONSTANTS.ENDSTATE) {
@@ -161,7 +170,7 @@ export default function App() {
                 color: newColor
             }]);
         }
-    } else if (navRadioState === "setEnd") {
+      } else if (navRadioState === "setEnd") {
         newState = CONSTANTS.ENDSTATE;
         newColor = CONSTANTS.ENDCOLOR;
         if (cell.state !== CONSTANTS.STARTSTATE) {
@@ -183,17 +192,7 @@ export default function App() {
                 color: newColor
             }]);
         }
-    } else {
-        // cell.state === DEFAULTSTATE 
-        //     ? updateGrid({
-        //         ...cell,
-        //         state: BARRIERSTATE,
-        //         color: BARRIERCOLOR}) 
-        //     : updateGrid({
-        //         ...cell,
-        //         state: DEFAULTSTATE,
-        //         color: DEFAULTCOLOR
-        //     })
+      } else if (navRadioState === "setBarriers") {
         if (cell.state === CONSTANTS.DEFAULTSTATE) {
             updateGrid([{
                 ...cell,
@@ -207,6 +206,9 @@ export default function App() {
                 color: CONSTANTS.DEFAULTCOLOR
             }]);  
         }
+      } else {
+        //
+      }
     }
   }
 

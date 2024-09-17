@@ -148,8 +148,8 @@ function isNewPathShorter(curr, neighbor) {
 }
 
 async function aStar(startCell, endCell, grid, updateGrid) {    
-    console.log("in astar");
-    console.log(runSearch);
+    // console.log("in astar");
+    // console.log(runSearch);
     const queue = new MinHeap();
     const visitedSet = new Set();
 

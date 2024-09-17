@@ -1,4 +1,3 @@
-- add delay setter
-- add reset button
 - add explore state, make sure only explore when both start and end are set, and can't add/change nodes when exploring
-- add more search algo and drop down menu
+- add more search algo
+- add tone.js, when setting start node, use it as the center pitch (low) and assign increasing frequencies to outer-ring nodes like ripples
