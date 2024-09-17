@@ -4,6 +4,11 @@ import { MinHeap } from './minHeap';
 
 let tempPath = [];
 let runSearch = true;
+let delayTime = 0;
+
+function setDelayTime(newDelayTime) {
+    delayTime = newDelayTime;
+}
 
 function terminateSearch() {
     runSearch = false;
@@ -13,6 +18,7 @@ function terminateSearch() {
 function reset() {
     tempPath = [];
     runSearch = true;
+    delayTime = 0;
 }
 
 function getNeighborCellsArr(curr, grid) {
@@ -154,7 +160,7 @@ async function aStar(startCell, endCell, grid, updateGrid) {
 
 
     while (!queue.isEmpty() && runSearch) {
-        await new Promise(resolve => setTimeout(resolve, 5)); // Wait for certain amount of tiie between each loop
+        await new Promise(resolve => setTimeout(resolve, delayTime)); // Wait for certain amount of tiie between each loop
 
         const curr = queue.heapPop(); // pop the cell with lowest f cost
         addToSetAndRender(curr, visitedSet, updateGrid);
@@ -182,4 +188,4 @@ async function aStar(startCell, endCell, grid, updateGrid) {
 }
 
 
-export {terminateSearch, aStar, reset}
+export {terminateSearch, aStar, reset, setDelayTime}

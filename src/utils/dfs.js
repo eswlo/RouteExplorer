@@ -3,8 +3,13 @@ import * as CONSTANTS from './constants';
 let tempPath = [];
 const visitedSet = new Set();
 let runSearch = true;
+let delayTime = 0;
 
-function standardDFS(startCell, endCell, grid, updateGrid) {
+function setDelayTime(newDelayTime) {
+    delayTime = newDelayTime;
+}
+
+function regularDFS(startCell, endCell, grid, updateGrid) {
     return dfs(startCell, endCell, grid, updateGrid, false);
 }
 
@@ -20,6 +25,7 @@ function reset() {
     tempPath = [];
     visitedSet.clear();
     runSearch = true;
+    delayTime = 0;
 }
 
 function getNeighborCellsArr(curr, grid) {
@@ -119,7 +125,7 @@ async function dfs(startCell, endCell, grid, updateGrid, isRandomized) {
     pathStack.unshift([startCell]);
     visitedSet.add(startCell);
     while (pathStack.length !== 0 && runSearch) {
-        await new Promise(resolve => setTimeout(resolve, 0)); // Wait for certain amount of tiie between each loop
+        await new Promise(resolve => setTimeout(resolve, delayTime)); // Wait for certain amount of tiie between each loop
 
         const path = pathStack.shift();
         // console.log(`path`);
@@ -153,8 +159,9 @@ async function dfs(startCell, endCell, grid, updateGrid, isRandomized) {
 }
 
 export {
-    standardDFS,
+    regularDFS,
     randomizedDFS,
     terminateSearch,
-    reset
+    reset,
+    setDelayTime
 }

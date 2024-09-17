@@ -7,18 +7,15 @@ import { useState, useCallback } from 'react';
 export default function Navbar(props) {
     // console.log(props.startCell);
 
-
-
-
     const getWarningMessage = useCallback(() => {
         if (!props.startCell && !props.endCell) {
-          return "Please set both start and end cells";
+          return "Please set both start and end cells before exploring 🛣️";
         }
         if (!props.startCell && props.endCell) {
-          return "Please set the start cell";
+          return "Please set the start cell before exploring 🛣️";
         }
         if (props.startCell && !props.endCell) {
-          return "Please set the end cell";
+          return "Please set the end cell before exploring 🛣️";
         }
         return "Feel free to draw some barriers!"; // No message if all conditions are satisfied
       }, [props.startCell, props.endCell]);
@@ -30,16 +27,16 @@ export default function Navbar(props) {
             <h1 className="nav-title">Route Explorer</h1>
             {/* <h3 className="nav-text">A* search algorithm</h3> */}
             <div className='nav-dropdown'>
-                <label htmlFor="algos" className='nav-dropdown-label'>Pick one search algorithm:</label>
+                <label htmlFor="algos" className='nav-dropdown-label'>Pick a search algorithm:</label>
                 <select disabled={props.isTerminated || props.exploreClicked}
                     id="algos"
                     value={props.selectedAlgo}
                     onChange={() => props.handleSelectedAlgo(event.target.value)}
                     name="algos">
                     <option value="aStar">A*</option>
-                    <option value="standardDFS">standard DFS</option>
+                    <option value="regularDFS">regular DFS</option>
                     <option value="randomizedDFS">randomized DFS</option>
-                    <option value="standardBFS">standard BFS</option>
+                    <option value="regularBFS">regular BFS</option>
                     <option value="randomizedBFS">randomized BFS</option>
                 </select>
             </div>
@@ -94,6 +91,18 @@ export default function Navbar(props) {
                     >Reset</button>
                 </div>
                 {warningMessage && <p className='nav-warning'>{warningMessage}</p>}
+            </div>
+            <div className="slidecontainer">
+                <input
+                    type="range"
+                    min="0"
+                    max="3000"
+                    value={props.navSliderValue}
+                    className="navSlider"
+                    id="navSlider"
+                    onChange={() => props.handleNavRangeSlier(event.target.value)}
+                />
+                <p>Delay Time (ms): <span id="navSliderValue">{props.navSliderValue}</span></p>
             </div>
         </nav>
     )

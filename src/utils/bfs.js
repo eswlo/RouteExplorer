@@ -3,10 +3,14 @@ import * as CONSTANTS from './constants';
 let tempPath = [];
 const visitedSet = new Set();
 let runSearch = true;
+let delayTime = 0;
+
+function setDelayTime(newDelayTime) {
+    delayTime = newDelayTime;
+}
 
 
-
-function standardBFS(startCell, endCell, grid, updateGrid) {
+function regularBFS(startCell, endCell, grid, updateGrid) {
     return bfs(startCell, endCell, grid, updateGrid, false);
 }
 
@@ -22,6 +26,7 @@ function reset() {
     tempPath = [];
     visitedSet.clear();
     runSearch = true;
+    delayTime;
 }
 
 function getNeighborCellsArr(curr, grid) {
@@ -122,7 +127,7 @@ export default async function bfs(startCell, endCell, grid, updateGrid, isRandom
     pathQueue.push([startCell]);
     visitedSet.add(startCell);
     while (pathQueue.length !== 0 && runSearch) {
-        await new Promise(resolve => setTimeout(resolve, 50)); // Wait for certain amount of tiie between each loop
+        await new Promise(resolve => setTimeout(resolve, delayTime)); // Wait for certain amount of tiie between each loop
 
         const path = pathQueue.shift();
         // console.log(`path`);
@@ -157,8 +162,9 @@ export default async function bfs(startCell, endCell, grid, updateGrid, isRandom
 
 
 export {
-    standardBFS,
+    regularBFS,
     randomizedBFS,
     terminateSearch,
-    reset
+    reset,
+    setDelayTime
 }

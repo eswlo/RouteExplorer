@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Main from './components/Main'
-import { terminateSearch as aStarTerminateSearch, aStar, reset as aStarReset } from './utils/aStar';
-import { terminateSearch as dfsTerminateSearch, standardDFS, randomizedDFS, reset as dfsReset } from "./utils/dfs";
-import { terminateSearch as bfsTerminateSearch, standardBFS, randomizedBFS, reset as bfsReset } from "./utils/bfs";
+import { terminateSearch as aStarTerminateSearch, aStar, reset as aStarReset, setDelayTime as aStarsetDelayTime } from './utils/aStar';
+import { terminateSearch as dfsTerminateSearch, regularDFS, randomizedDFS, reset as dfsReset, setDelayTime as dfSsetDelayTime } from "./utils/dfs";
+import { terminateSearch as bfsTerminateSearch, regularBFS, randomizedBFS, reset as bfsReset, setDelayTime as bfsSetDelayTime } from "./utils/bfs";
 import { nanoid } from "nanoid"
 import * as CONSTANTS from './utils/constants';
 
@@ -18,6 +18,7 @@ export default function App() {
   const [selectedAlgo, setSelectedAlgo] = useState('aStar');
   const [isReset, setIsReset] = useState(false);
   const [isTerminated, setIsTerminated] = useState(false);
+  const [navSliderValue, setNavSliderValue] = useState(0);
 
   // states related to grid
   const [grid, setGrid] = useState(createNewGrid());
@@ -60,13 +61,18 @@ export default function App() {
     }
   }
 
-    function handleTerminate() {
-      console.log("handleTerminate");
+  function handleTerminate() {
+    console.log("handleTerminate");
+    setIsTerminated(true);
+
+    if (selectedAlgo === "aStar") {
       aStarTerminateSearch();
+    } else if (selectedAlgo === "regularDFS" || selectedAlgo === "randomizedDFS") {
       dfsTerminateSearch();
+    } else if (selectedAlgo === "regularBFS" || selectedAlgo === "randomizedBFS") {
       bfsTerminateSearch();
-      setIsTerminated(true);
-    }
+    } 
+  }
 
 
   function handleRadioChange(newRadioState) {
@@ -75,21 +81,31 @@ export default function App() {
     setRadioSelectedOption(newRadioState);
   }
 
+  function handleNavRangeSlier(sliderValue) {
+    setNavSliderValue(sliderValue);
+    if (selectedAlgo === "aStar") {
+      aStarsetDelayTime(sliderValue);
+    } else if (selectedAlgo === "regularDFS" || selectedAlgo === "randomizedDFS") {
+      dfSsetDelayTime(sliderValue);
+    } else if (selectedAlgo === "regularBFS" || selectedAlgo === "randomizedBFS") {
+      bfsSetDelayTime(sliderValue);
+    } 
+  }
+
 
   // funcsions for Main / Grid / Cell
   useEffect(() => {
     if (exploreClicked && startCell && endCell) {
       if (selectedAlgo === "aStar") {
         aStar(startCell, endCell, grid, updateGrid);
-      } else if (selectedAlgo === "standardDFS") {
-        standardDFS(startCell, endCell, grid, updateGrid);
+      } else if (selectedAlgo === "regularDFS") {
+        regularDFS(startCell, endCell, grid, updateGrid);
       } else if (selectedAlgo === "randomizedDFS") {
         randomizedDFS(startCell, endCell, grid, updateGrid);
-      } else if (selectedAlgo === "standardBFS") {
-        standardBFS(startCell, endCell, grid, updateGrid);
+      } else if (selectedAlgo === "regularBFS") {
+        regularBFS(startCell, endCell, grid, updateGrid);
       } else {
         randomizedBFS(startCell, endCell, grid, updateGrid);
-
       }
     } else {
         setExploreClicked(false);
@@ -240,6 +256,8 @@ export default function App() {
             exploreClicked={exploreClicked}
             selectedAlgo={selectedAlgo} 
             handleSelectedAlgo={handleSelectedAlgo}
+            handleNavRangeSlier={handleNavRangeSlier}
+            navSliderValue={navSliderValue}
             />
           <Main 
             navRadioState={navRadioState}
