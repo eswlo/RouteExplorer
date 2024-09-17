@@ -28,7 +28,22 @@ export default function Navbar(props) {
     return (
         <nav>
             <h1 className="nav-title">Route Explorer</h1>
-            <h3 className="nav-text">A* search algorithm</h3>
+            {/* <h3 className="nav-text">A* search algorithm</h3> */}
+            <div className='nav-dropdown'>
+                <label htmlFor="algos" className='nav-dropdown-label'>Pick one search algorithm:</label>
+                <select disabled={props.isTerminated || props.exploreClicked}
+                    id="algos"
+                    value={props.selectedAlgo}
+                    onChange={() => props.handleSelectedAlgo(event.target.value)}
+                    name="algos">
+                    <option value="aStar">A*</option>
+                    <option value="standardDFS">standard DFS</option>
+                    <option value="randomizedDFS">randomized DFS</option>
+                    <option value="standardBFS">standard BFS</option>
+                    <option value="randomizedBFS">randomized BFS</option>
+                </select>
+            </div>
+  
             <fieldset className="nav-radio-field">
                 <input 
                     type="radio"
@@ -66,12 +81,16 @@ export default function Navbar(props) {
             </fieldset>
             <div className='btn-warning-container'>
                 <div className="btn-container">
-                    <button className="nav-explore-btn"
+                    <button className="nav-btn"
                         onClick={props.handleExplore}
                     >Explore</button>
-                    <button className="nav-reset-btn"
-                        onClick={props.handleRest}
+                    <button className="nav-btn"
+                        onClick={props.handleTerminate}
                         disabled={!props.startCell || !props.endCell || !props.exploreClicked}
+                    >Terminate</button>
+                    <button className="nav-btn"
+                        onClick={props.handleReset}
+                        disabled={!props.isTerminated}
                     >Reset</button>
                 </div>
                 {warningMessage && <p className='nav-warning'>{warningMessage}</p>}
@@ -83,7 +102,6 @@ export default function Navbar(props) {
 Navbar.propTypes = {
     handleRadioChange: PropTypes.func.isRequired, // Validate that it is a function
     handleExplore: PropTypes.func.isRequired,
-    handleRest: PropTypes.func.isRequired,
+    handleTerminate: PropTypes.func.isRequired,
     radioSelectedOption: PropTypes.string.isRequired,
-    isSearchDone: PropTypes.bool.isRequired
 };

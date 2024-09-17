@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Main from './components/Main'
-import { terminateSearch as aStarTerminateSearch, aStar } from './utils/aStar';
-import { terminateSearch as dfsTerminateSearch, standardDFS, randomizedDFS } from "./utils/dfs";
-import { terminateSearch as bfsTerminateSearch, standardBFS, randomizedBFS } from "./utils/bfs";
+import { terminateSearch as aStarTerminateSearch, aStar, reset as aStarReset } from './utils/aStar';
+import { terminateSearch as dfsTerminateSearch, standardDFS, randomizedDFS, reset as dfsReset } from "./utils/dfs";
+import { terminateSearch as bfsTerminateSearch, standardBFS, randomizedBFS, reset as bfsReset } from "./utils/bfs";
 import { nanoid } from "nanoid"
 import * as CONSTANTS from './utils/constants';
 
@@ -15,13 +15,42 @@ export default function App() {
   // manage radio btn checked states
   const [radioSelectedOption, setRadioSelectedOption] = useState("setStart");
   const [isSearchDone , setIsSearchDone] = useState(false)
+  const [selectedAlgo, setSelectedAlgo] = useState('aStar');
+  const [isReset, setIsReset] = useState(false);
+  const [isTerminated, setIsTerminated] = useState(false);
 
   // states related to grid
   const [grid, setGrid] = useState(createNewGrid());
   const [startCell, setStartCell] = useState(null); 
   const [endCell, setEndCell] = useState(null);
 
+  const reset = () => {
+    console.log("reset");
+    aStarReset();
+    dfsReset();
+    bfsReset();
+    setNavRadioState
+    setNavRadioState("setStart");
+    setRadioSelectedOption("setStart");
+    setExploreClicked(false);
+    setStartCell(null);
+    setEndCell(null);
+    setIsReset(true);
+    setIsTerminated(false);
+  }
+
+  function handleReset() {
+    reset();
+  }
+
   // functions related to navbar
+  function handleSelectedAlgo(algo) {
+    console.log(`algo: ${algo}`);
+    setSelectedAlgo(algo);
+    handleTerminate();
+    handleReset();
+  }
+
   function handleExplore() {
     console.log(`exploreClicked: ${exploreClicked}`);
     if (startCell && endCell) {
@@ -31,19 +60,14 @@ export default function App() {
     }
   }
 
-  function handleRest() {
-    aStarTerminateSearch();
-    dfsTerminateSearch();
-    bfsTerminateSearch();
+    function handleTerminate() {
+      console.log("handleTerminate");
+      aStarTerminateSearch();
+      dfsTerminateSearch();
+      bfsTerminateSearch();
+      setIsTerminated(true);
+    }
 
-    setIsSearchDone(false);
-    setNavRadioState("setStart");
-    setRadioSelectedOption("setStart");
-    setExploreClicked(false);
-    // setGrid(createNewGrid());
-    setStartCell(null);
-    setEndCell(null);
-  }
 
   function handleRadioChange(newRadioState) {
     // console.log(newRadioState);
@@ -51,27 +75,35 @@ export default function App() {
     setRadioSelectedOption(newRadioState);
   }
 
-  const searchComplete = () => {
-    console.log("done");
-    setIsSearchDone(true);
-  }
 
   // funcsions for Main / Grid / Cell
   useEffect(() => {
     if (exploreClicked && startCell && endCell) {
-        // aStar(startCell, endCell, grid, updateGrid, searchComplete);
-        standardDFS(startCell, endCell, grid, updateGrid, searchComplete);
-        // randomizedDFS(startCell, endCell, grid, updateGrid, searchComplete);
-        // standardBFS(startCell, endCell, grid, updateGrid, searchComplete);
-        // randomizedBFS(startCell, endCell, grid, updateGrid, searchComplete);
+      if (selectedAlgo === "aStar") {
+        aStar(startCell, endCell, grid, updateGrid);
+      } else if (selectedAlgo === "standardDFS") {
+        standardDFS(startCell, endCell, grid, updateGrid);
+      } else if (selectedAlgo === "randomizedDFS") {
+        randomizedDFS(startCell, endCell, grid, updateGrid);
+      } else if (selectedAlgo === "standardBFS") {
+        standardBFS(startCell, endCell, grid, updateGrid);
+      } else {
+        randomizedBFS(startCell, endCell, grid, updateGrid);
+
+      }
     } else {
         setExploreClicked(false);
     }
   }, [exploreClicked]);
 
+
   useEffect(() => {
-    setGrid(createNewGrid());
-  }, [isSearchDone]);
+    if (isReset) {
+      console.log('Refreshing grid');
+      setGrid(createNewGrid());
+      setIsReset(false);
+    }
+  }, [isReset]);
 
 
 
@@ -199,12 +231,15 @@ export default function App() {
           <Navbar 
             handleRadioChange={handleRadioChange}
             handleExplore={handleExplore}
-            handleRest={handleRest}
-            isSearchDone={isSearchDone}
+            handleTerminate={handleTerminate}
+            handleReset={handleReset}
+            isTerminated={isTerminated}
             radioSelectedOption={radioSelectedOption}
             startCell={startCell}
             endCell={endCell}
             exploreClicked={exploreClicked}
+            selectedAlgo={selectedAlgo} 
+            handleSelectedAlgo={handleSelectedAlgo}
             />
           <Main 
             navRadioState={navRadioState}

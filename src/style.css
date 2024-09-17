@@ -21,9 +21,24 @@ nav {
 }
 
 .nav-title {
+    font-size: 2.5rem;
     color: #ffffe0;
     font-weight: 600;
     margin-right: 20px;
+}
+
+.nav-dropdown {
+    margin-left: 200px;
+    margin-right: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-dropdown-label {
+    font-size: 1.2rem;
+    font-family: Inter, sans-serif;
+    font-weight: 400;
+    margin-bottom: 5px;
 }
 
 .nav-radio-field {
@@ -50,7 +65,7 @@ nav {
     justify-content: space-between;
 }
 
-.nav-explore-btn, .nav-reset-btn {
+.nav-btn {
     margin-left: 20px;
     margin-right: 20px;
     background: #f5f5dc;
@@ -63,13 +78,13 @@ nav {
     transition: all 0.2s ease;
 }
 
-.nav-explore-btn:active, .nav-reset-btn:active {
+.nav-btn:active {
     background-color: #e0e0d1;
     box-shadow: 0 2px #c0c0b8;
     transform: translateY(1px);
 }
 
-.nav-explore-btn:focus, .nav-reset-btn:focus {
+.nav-btn:focus {
     outline: none;
 }
 

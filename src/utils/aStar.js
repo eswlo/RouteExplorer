@@ -7,6 +7,7 @@ let runSearch = true;
 
 function terminateSearch() {
     runSearch = false;
+    console.log(`terminate in search: ${runSearch}`);
 }
 
 function reset() {
@@ -82,7 +83,7 @@ function setNeighborCellCosts(curr, neighbor, startCell, endCell) {
     }
 }
 
-function drawFinalPath(cell, startCell, endCell, updateGrid, searchComplete) {
+function drawFinalPath(cell, startCell, endCell, updateGrid) {
     const finalPath = [];
     let curr = cell;
     while (curr.id !== startCell.id) {
@@ -96,9 +97,7 @@ function drawFinalPath(cell, startCell, endCell, updateGrid, searchComplete) {
             cell.color = CONSTANTS.PATHCOLOR;
         }
     })
-    reset();
     updateGrid(finalPath);
-    searchComplete();
     return "Route Found";
 }
 
@@ -142,7 +141,9 @@ function isNewPathShorter(curr, neighbor) {
     return ((curr.g + getDistance(curr, neighbor)) < neighbor.g)
 }
 
-async function aStar(startCell, endCell, grid, updateGrid, searchComplete) {    
+async function aStar(startCell, endCell, grid, updateGrid) {    
+    console.log("in astar");
+    console.log(runSearch);
     const queue = new MinHeap();
     const visitedSet = new Set();
 
@@ -160,7 +161,7 @@ async function aStar(startCell, endCell, grid, updateGrid, searchComplete) {
         drawTempPath(curr, startCell, updateGrid);
 
         if (curr.id === endCell.id) {
-            return drawFinalPath(curr, startCell, endCell, updateGrid, searchComplete);
+            return drawFinalPath(curr, startCell, endCell, updateGrid);
         } else {
             const neighborCellsArr = getNeighborCellsArr(curr, grid);
             for (const nc of neighborCellsArr) {
@@ -177,10 +178,8 @@ async function aStar(startCell, endCell, grid, updateGrid, searchComplete) {
             }
         }
     }
-    reset();
-    searchComplete();
     return "Rote Not Found"
 }
 
 
-export {terminateSearch, aStar}
+export {terminateSearch, aStar, reset}

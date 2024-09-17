@@ -4,12 +4,12 @@ let tempPath = [];
 const visitedSet = new Set();
 let runSearch = true;
 
-function standardDFS(startCell, endCell, grid, updateGrid, searchComplete) {
-    return dfs(startCell, endCell, grid, updateGrid, searchComplete, false);
+function standardDFS(startCell, endCell, grid, updateGrid) {
+    return dfs(startCell, endCell, grid, updateGrid, false);
 }
 
-function randomizedDFS(startCell, endCell, grid, updateGrid, searchComplete) {
-    return dfs(startCell, endCell, grid, updateGrid, searchComplete, true);
+function randomizedDFS(startCell, endCell, grid, updateGrid) {
+    return dfs(startCell, endCell, grid, updateGrid, true);
 }
 
 function terminateSearch() {
@@ -88,7 +88,7 @@ function drawTempPath(path, startCell, updateGrid) {
 
 
 
-function drawFinalPath(finalPath, startCell, endCell, updateGrid, searchComplete) {
+function drawFinalPath(finalPath, startCell, endCell, updateGrid) {
     console.log("drawFinalPath");
     finalPath.forEach((cell) => {
         if (cell.id !== startCell.id && cell.id !== endCell.id) {
@@ -97,7 +97,6 @@ function drawFinalPath(finalPath, startCell, endCell, updateGrid, searchComplete
     });
     reset();
     updateGrid(finalPath);
-    searchComplete();
     return "Route Found";
 }
 
@@ -114,7 +113,7 @@ function shuffleArray(array) {
 }
 
 
-async function dfs(startCell, endCell, grid, updateGrid, searchComplete, isRandomized) {
+async function dfs(startCell, endCell, grid, updateGrid, isRandomized) {
     const pathStack = [];
     // console.log(endCell);
     pathStack.unshift([startCell]);
@@ -129,7 +128,7 @@ async function dfs(startCell, endCell, grid, updateGrid, searchComplete, isRando
         const curr = path[pathSize - 1];
         drawTempPath(path, startCell, updateGrid);
         if (curr.id === endCell.id) {
-            return drawFinalPath(path, startCell, endCell, updateGrid, searchComplete);
+            return drawFinalPath(path, startCell, endCell, updateGrid);
         } else {
             let neighborCellsArr = getNeighborCellsArr(curr, grid);
             if (isRandomized) {
@@ -150,12 +149,12 @@ async function dfs(startCell, endCell, grid, updateGrid, searchComplete, isRando
         }
     }
     reset();
-    searchComplete();
     return "No route found";
 }
 
 export {
     standardDFS,
     randomizedDFS,
-    terminateSearch
+    terminateSearch,
+    reset
 }
