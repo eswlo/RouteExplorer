@@ -3,6 +3,16 @@ import * as CONSTANTS from './constants';
 import { MinHeap } from './minHeap';
 
 let tempPath = [];
+let runSearch = true;
+
+function terminateSearch() {
+    runSearch = false;
+}
+
+function reset() {
+    tempPath = [];
+    runSearch = true;
+}
 
 function getNeighborCellsArr(curr, grid) {
     const row = curr.y;
@@ -86,7 +96,7 @@ function drawFinalPath(cell, startCell, endCell, updateGrid, searchComplete) {
             cell.color = CONSTANTS.PATHCOLOR;
         }
     })
-    tempPath = [];
+    reset();
     updateGrid(finalPath);
     searchComplete();
     return "Route Found";
@@ -132,7 +142,7 @@ function isNewPathShorter(curr, neighbor) {
     return ((curr.g + getDistance(curr, neighbor)) < neighbor.g)
 }
 
-export default async function aStar(startCell, endCell, grid, updateGrid, searchComplete) {    
+async function aStar(startCell, endCell, grid, updateGrid, searchComplete) {    
     const queue = new MinHeap();
     const visitedSet = new Set();
 
@@ -142,7 +152,7 @@ export default async function aStar(startCell, endCell, grid, updateGrid, search
     pushToQueueAndRender(startCell, queue, updateGrid);
 
 
-    while (!queue.isEmpty()) {
+    while (!queue.isEmpty() && runSearch) {
         await new Promise(resolve => setTimeout(resolve, 5)); // Wait for certain amount of tiie between each loop
 
         const curr = queue.heapPop(); // pop the cell with lowest f cost
@@ -167,8 +177,10 @@ export default async function aStar(startCell, endCell, grid, updateGrid, search
             }
         }
     }
+    reset();
+    searchComplete();
     return "Rote Not Found"
 }
 
 
-
+export {terminateSearch, aStar}

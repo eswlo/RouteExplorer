@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Main from './components/Main'
-import aStar from './utils/aStar';
-import { standardDFS, randomizedDFS } from "./utils/dfs";
-import { standardBFS, randomizedBFS } from "./utils/bfs";
+import { terminateSearch as aStarTerminateSearch, aStar } from './utils/aStar';
+import { terminateSearch as dfsTerminateSearch, standardDFS, randomizedDFS } from "./utils/dfs";
+import { terminateSearch as bfsTerminateSearch, standardBFS, randomizedBFS } from "./utils/bfs";
 import { nanoid } from "nanoid"
 import * as CONSTANTS from './utils/constants';
 
@@ -32,11 +32,15 @@ export default function App() {
   }
 
   function handleRest() {
+    aStarTerminateSearch();
+    dfsTerminateSearch();
+    bfsTerminateSearch();
+
     setIsSearchDone(false);
     setNavRadioState("setStart");
     setRadioSelectedOption("setStart");
     setExploreClicked(false);
-    setGrid(createNewGrid());
+    // setGrid(createNewGrid());
     setStartCell(null);
     setEndCell(null);
   }
@@ -55,15 +59,19 @@ export default function App() {
   // funcsions for Main / Grid / Cell
   useEffect(() => {
     if (exploreClicked && startCell && endCell) {
-        aStar(startCell, endCell, grid, updateGrid, searchComplete);
-        // standardDFS(startCell, endCell, grid, updateGrid);
-        // randomizedDFS(startCell, endCell, grid, updateGrid);
-        // standardBFS(startCell, endCell, grid, updateGrid);
-        // randomizedBFS(startCell, endCell, grid, updateGrid);
+        // aStar(startCell, endCell, grid, updateGrid, searchComplete);
+        standardDFS(startCell, endCell, grid, updateGrid, searchComplete);
+        // randomizedDFS(startCell, endCell, grid, updateGrid, searchComplete);
+        // standardBFS(startCell, endCell, grid, updateGrid, searchComplete);
+        // randomizedBFS(startCell, endCell, grid, updateGrid, searchComplete);
     } else {
         setExploreClicked(false);
     }
   }, [exploreClicked]);
+
+  useEffect(() => {
+    setGrid(createNewGrid());
+  }, [isSearchDone]);
 
 
 
@@ -196,6 +204,7 @@ export default function App() {
             radioSelectedOption={radioSelectedOption}
             startCell={startCell}
             endCell={endCell}
+            exploreClicked={exploreClicked}
             />
           <Main 
             navRadioState={navRadioState}

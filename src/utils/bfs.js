@@ -2,16 +2,27 @@ import * as CONSTANTS from './constants';
 
 let tempPath = [];
 const visitedSet = new Set();
+let runSearch = true;
 
 
-function standardBFS(startCell, endCell, grid, updateGrid) {
-    return bfs(startCell, endCell, grid, updateGrid, false);
+
+function standardBFS(startCell, endCell, grid, updateGrid, searchComplete) {
+    return bfs(startCell, endCell, grid, updateGrid, searchComplete, false);
 }
 
-function randomizedBFS(startCell, endCell, grid, updateGrid) {
-    return bfs(startCell, endCell, grid, updateGrid, true);
+function randomizedBFS(startCell, endCell, grid, updateGrid, searchComplete) {
+    return bfs(startCell, endCell, grid, updateGrid, searchComplete, true);
 }
 
+function terminateSearch() {
+    runSearch = false;
+}
+
+function reset() {
+    tempPath = [];
+    visitedSet.clear();
+    runSearch = true;
+}
 
 function getNeighborCellsArr(curr, grid) {
     const row = curr.y;
@@ -80,14 +91,17 @@ function drawTempPath(path, startCell, updateGrid) {
 
 
 
-function drawFinalPath(finalPath, startCell, endCell, updateGrid) {
+function drawFinalPath(finalPath, startCell, endCell, updateGrid, searchComplete) {
     // console.log("drawFinalPath");
     finalPath.forEach((cell) => {
         if (cell.id !== startCell.id && cell.id !== endCell.id) {
             cell.color = CONSTANTS.PATHCOLOR;
         }
-    })
+    });
+    reset();
     updateGrid(finalPath);
+    searchComplete();
+    return "Route Found";
 }
 
 
@@ -103,7 +117,7 @@ function shuffleArray(array) {
 }
 
 
-export default async function bfs(startCell, endCell, grid, updateGrid, isRandomized) {
+export default async function bfs(startCell, endCell, grid, updateGrid, searchComplete, isRandomized) {
     const pathQueue = [];
     // console.log(endCell);
     pathQueue.push([startCell]);
@@ -118,7 +132,7 @@ export default async function bfs(startCell, endCell, grid, updateGrid, isRandom
         const curr = path[pathSize - 1];
         drawTempPath(path, startCell, updateGrid);
         if (curr.id === endCell.id) {
-            return drawFinalPath(path, startCell, endCell, updateGrid);
+            return drawFinalPath(path, startCell, endCell, updateGrid, searchComplete);
         } else {
             let neighborCellsArr = getNeighborCellsArr(curr, grid);
             if (isRandomized) {
@@ -138,11 +152,14 @@ export default async function bfs(startCell, endCell, grid, updateGrid, isRandom
             });
         }
     }
+    reset();
+    searchComplete();
     return "No route found";
 }
 
 
 export {
     standardBFS,
-    randomizedBFS
+    randomizedBFS,
+    terminateSearch
 }

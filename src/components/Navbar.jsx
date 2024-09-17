@@ -71,7 +71,7 @@ export default function Navbar(props) {
                     >Explore</button>
                     <button className="nav-reset-btn"
                         onClick={props.handleRest}
-                        disabled={!props.isSearchDone}
+                        disabled={!props.startCell || !props.endCell || !props.exploreClicked}
                     >Reset</button>
                 </div>
                 {warningMessage && <p className='nav-warning'>{warningMessage}</p>}

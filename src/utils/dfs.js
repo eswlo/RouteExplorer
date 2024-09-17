@@ -2,16 +2,25 @@ import * as CONSTANTS from './constants';
 
 let tempPath = [];
 const visitedSet = new Set();
+let runSearch = true;
 
-function standardDFS(startCell, endCell, grid, updateGrid) {
-    return dfs(startCell, endCell, grid, updateGrid, false);
+function standardDFS(startCell, endCell, grid, updateGrid, searchComplete) {
+    return dfs(startCell, endCell, grid, updateGrid, searchComplete, false);
 }
 
-function randomizedDFS(startCell, endCell, grid, updateGrid) {
-    return dfs(startCell, endCell, grid, updateGrid, true);
+function randomizedDFS(startCell, endCell, grid, updateGrid, searchComplete) {
+    return dfs(startCell, endCell, grid, updateGrid, searchComplete, true);
 }
 
+function terminateSearch() {
+    runSearch = false;
+}
 
+function reset() {
+    tempPath = [];
+    visitedSet.clear();
+    runSearch = true;
+}
 
 function getNeighborCellsArr(curr, grid) {
     const row = curr.y;
@@ -79,14 +88,17 @@ function drawTempPath(path, startCell, updateGrid) {
 
 
 
-function drawFinalPath(finalPath, startCell, endCell, updateGrid) {
-    // console.log("drawFinalPath");
+function drawFinalPath(finalPath, startCell, endCell, updateGrid, searchComplete) {
+    console.log("drawFinalPath");
     finalPath.forEach((cell) => {
         if (cell.id !== startCell.id && cell.id !== endCell.id) {
             cell.color = CONSTANTS.PATHCOLOR;
         }
-    })
+    });
+    reset();
     updateGrid(finalPath);
+    searchComplete();
+    return "Route Found";
 }
 
 
@@ -102,12 +114,12 @@ function shuffleArray(array) {
 }
 
 
-async function dfs(startCell, endCell, grid, updateGrid, isRandomized) {
+async function dfs(startCell, endCell, grid, updateGrid, searchComplete, isRandomized) {
     const pathStack = [];
     // console.log(endCell);
     pathStack.unshift([startCell]);
     visitedSet.add(startCell);
-    while (pathStack.length !== 0) {
+    while (pathStack.length !== 0 && runSearch) {
         await new Promise(resolve => setTimeout(resolve, 0)); // Wait for certain amount of tiie between each loop
 
         const path = pathStack.shift();
@@ -117,7 +129,7 @@ async function dfs(startCell, endCell, grid, updateGrid, isRandomized) {
         const curr = path[pathSize - 1];
         drawTempPath(path, startCell, updateGrid);
         if (curr.id === endCell.id) {
-            return drawFinalPath(path, startCell, endCell, updateGrid);
+            return drawFinalPath(path, startCell, endCell, updateGrid, searchComplete);
         } else {
             let neighborCellsArr = getNeighborCellsArr(curr, grid);
             if (isRandomized) {
@@ -137,10 +149,13 @@ async function dfs(startCell, endCell, grid, updateGrid, isRandomized) {
             });
         }
     }
+    reset();
+    searchComplete();
     return "No route found";
 }
 
 export {
     standardDFS,
-    randomizedDFS
+    randomizedDFS,
+    terminateSearch
 }
