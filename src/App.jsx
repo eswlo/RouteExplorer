@@ -152,22 +152,25 @@ export default function App() {
         newState = CONSTANTS.STARTSTATE;
         newColor = CONSTANTS.STARTCOLOR;
         if (cell.state !== CONSTANTS.ENDSTATE) {
-            if (startCell !== null) {
+            if (startCell !== null) { // update grid by resetting old start cell
                 updateGrid([{
                     ...startCell,
                     state: CONSTANTS.DEFAULTSTATE,
-                    color: CONSTANTS.DEFAULTCOLOR
+                    color: CONSTANTS.DEFAULTCOLOR,
+                    freq: 0
                 }]);
             }
-            setStartCell({
+            setStartCell({ // set new start cell
                 ...cell,
                 state: newState,
-                color: newColor
+                color: newColor,
+                freq: CONSTANTS.STARTFREQ
             });
-            updateGrid([{
+            updateGrid([{ // update grid with the new start cell 
                 ...cell,
                 state: newState,
-                color: newColor
+                color: newColor,
+                freq: CONSTANTS.STARTFREQ
             }]);
         }
       } else if (navRadioState === "setEnd") {
@@ -175,21 +178,24 @@ export default function App() {
         newColor = CONSTANTS.ENDCOLOR;
         if (cell.state !== CONSTANTS.STARTSTATE) {
             if (endCell !== null) {
-                updateGrid([{
+                updateGrid([{ // update grid by resetting old end cell
                     ...endCell,
                     state: CONSTANTS.DEFAULTSTATE,
-                    color: CONSTANTS.DEFAULTCOLOR
+                    color: CONSTANTS.DEFAULTCOLOR,
+                    freq: 0
                 }]);            
             }
-            setEndCell({
+            setEndCell({ // set new end cell
                 ...cell,
                 state: newState,
-                color: newColor
+                color: newColor,
+                freq: CONSTANTS.STARTFREQ * (2**CONSTANTS.OCTAVE)
             });
-            updateGrid([{
+            updateGrid([{ // update grid with the end start cell 
                 ...cell,
                 state: newState,
-                color: newColor
+                color: newColor,
+                freq: CONSTANTS.STARTFREQ * (2**CONSTANTS.OCTAVE)
             }]);
         }
       } else if (navRadioState === "setBarriers") {
@@ -226,7 +232,8 @@ export default function App() {
     prev: null, // set the parent cell leter during search
     g: Infinity,
     h: Infinity,
-    f: Infinity
+    f: Infinity,
+    freq: 0
     })
   }
 

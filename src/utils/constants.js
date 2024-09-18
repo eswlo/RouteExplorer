@@ -16,6 +16,9 @@ const BARRIERCOLOR = "#4e6e62";
 const QUEUECOLOR = "#dee5de";
 const VISITEDCOLOR = "#8e9bae";
 
+// FREQUENCY
+const STARTFREQ = 220;
+const OCTAVE = 3;
 export {
     WIDTH,
     HEIGHT,
@@ -29,5 +32,7 @@ export {
     BARRIERCOLOR,
     QUEUECOLOR,
     VISITEDCOLOR,
-    PATHCOLOR
+    PATHCOLOR,
+    STARTFREQ,
+    OCTAVE
 };

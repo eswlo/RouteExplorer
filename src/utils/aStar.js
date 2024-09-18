@@ -21,6 +21,13 @@ function reset() {
     delayTime = 0;
 }
 
+// modify the conversion later!
+function getVisitedCellFreq(curr, startCell, endCell) {
+    const distBtwnCurrAndStart = getDistance(curr, startCell);
+    const distBtwnStartAndEnd = getDistance(startCell, endCell);
+    return (startCell.freq * ( (distBtwnCurrAndStart/distBtwnStartAndEnd) * (2 ** CONSTANTS.OCTAVE) ));
+}
+
 function getNeighborCellsArr(curr, grid) {
     const row = curr.y;
     const col = curr.x
@@ -101,8 +108,11 @@ function drawFinalPath(cell, startCell, endCell, updateGrid) {
     finalPath.forEach((cell) => {
         if (cell.id !== startCell.id && cell.id !== endCell.id) {
             cell.color = CONSTANTS.PATHCOLOR;
+            cell.freq = getVisitedCellFreq(cell, startCell, endCell);
+            console.log(cell.freq);
         }
     })
+    console.log(endCell.freq);
     updateGrid(finalPath);
     return "Route Found";
 }
@@ -116,7 +126,7 @@ function retoreTempPath(tempPath, startCell, updateGrid) {
     updateGrid(tempPath);
 }
 
-function drawTempPath(cell, startCell, updateGrid) {
+function drawTempPath(cell, startCell, endCell, updateGrid) {
     if (tempPath.length != 0) {
         retoreTempPath(tempPath, startCell, updateGrid);
         tempPath = [];
@@ -131,6 +141,8 @@ function drawTempPath(cell, startCell, updateGrid) {
     tempPath.forEach((cell) => {
         if (cell.id !== startCell.id) {
             cell.color = CONSTANTS.PATHCOLOR;
+            cell.freq = getVisitedCellFreq(cell, startCell, endCell);
+            // console.log(cell.freq);
         }
     })
     updateGrid(tempPath);
@@ -164,7 +176,7 @@ async function aStar(startCell, endCell, grid, updateGrid) {
 
         const curr = queue.heapPop(); // pop the cell with lowest f cost
         addToSetAndRender(curr, visitedSet, updateGrid);
-        drawTempPath(curr, startCell, updateGrid);
+        drawTempPath(curr, startCell, endCell, updateGrid);
 
         if (curr.id === endCell.id) {
             return drawFinalPath(curr, startCell, endCell, updateGrid);
