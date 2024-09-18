@@ -55,10 +55,14 @@ nav {
     border: none;
     margin-left: 10px;
 }
+.nav-radio-input {
+    cursor: pointer;
+}
 
 .nav-radio-label {
     margin-left: 5px;
     font-size: 15px;
+    cursor: pointer;
 }
 
 .btn-warning-container {

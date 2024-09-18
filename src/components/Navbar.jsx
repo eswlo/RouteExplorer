@@ -42,7 +42,7 @@ export default function Navbar(props) {
             </div>
   
             <fieldset className="nav-radio-field">
-                <input 
+                <input className='nav-radio-input'
                     type="radio"
                     id="setStart"
                     name="setState"
@@ -53,7 +53,7 @@ export default function Navbar(props) {
                 <label className="nav-radio-label" htmlFor="setStart">Set start cell</label>
                 <br />
                 
-                <input 
+                <input className='nav-radio-input'
                     type="radio"
                     id="setEnd"
                     name="setState"
@@ -64,7 +64,7 @@ export default function Navbar(props) {
                 <label className="nav-radio-label" htmlFor="setEnd">Set end cell</label>
                 <br />
                 
-                <input 
+                <input className='nav-radio-input' 
                     type="radio"
                     id="setBarriers"
                     name="setState"
