@@ -88,8 +88,10 @@ function drawTempPath(path, startCell, endCell, updateGrid, lastCellID) {
         if (cell.id !== startCell.id) {
             cell.color = CONSTANTS.PATHCOLOR;
         }
-        getVisitedCellFreq(cell, startCell, endCell)
-        cell.makeSound = true;
+        if (cell.id === lastCellID && cell.id != startCell.id) {
+            cell.freq = getVisitedCellFreq(cell, startCell, endCell);
+            cell.makeSound = true;
+        }
     })
     // console.log('tempPath');
     // console.log(tempPath);
@@ -99,7 +101,7 @@ function drawTempPath(path, startCell, endCell, updateGrid, lastCellID) {
 
 
 function drawFinalPath(finalPath, startCell, endCell, updateGrid) {
-    console.log("drawFinalPath");
+    // console.log("drawFinalPath");
     finalPath.forEach((cell) => {
         if (cell.id !== startCell.id && cell.id !== endCell.id) {
             cell.color = CONSTANTS.PATHCOLOR;
