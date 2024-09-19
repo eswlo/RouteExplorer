@@ -1,5 +1,5 @@
 const WIDTH = 100;
-const HEIGHT = 45;
+const HEIGHT = 40;
 
 // STATES
 const DEFAULTSTATE = "";

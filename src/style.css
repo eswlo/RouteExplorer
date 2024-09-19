@@ -7,6 +7,7 @@ body {
     font-family: Inter, sans-serif;
     font-weight: 400;
     height: 100vh;
+    width: 100%;
     background-color: #f5f5f5 ;
 }
 
@@ -16,26 +17,26 @@ nav {
     align-items: center;
     justify-content: center;
     background-color: #008080;
-    height: 150px;
-
+    height: 120px;
+    width: 100%; 
 }
 
 .nav-title {
-    font-size: 2.5rem;
+    font-size: 2rem;
     color: #ffffe0;
     font-weight: 600;
     margin-right: 20px;
 }
 
 .nav-dropdown {
-    margin-left: 200px;
+    margin-left: 50px;
     margin-right: 5px;
     display: flex;
     flex-direction: column;
 }
 
 .nav-dropdown-label {
-    font-size: 1.2rem;
+    font-size: 0.85rem;
     font-family: Inter, sans-serif;
     font-weight: 400;
     margin-bottom: 5px;
@@ -43,12 +44,12 @@ nav {
 
 .nav-dropdown select {
     margin-top: 5px;
-    font-size: 1.1rem; 
+    font-size: 0.85rem; 
     padding: 2px;
     border-radius: 5px;
 }
 .nav-dropdown select option {
-    font-size: 1.1rem;
+    font-size: 0.85rem;
 }
 
 .nav-radio-field {
@@ -61,7 +62,7 @@ nav {
 
 .nav-radio-label {
     margin-left: 5px;
-    font-size: 15px;
+    font-size: 13px;
     cursor: pointer;
 }
 
@@ -71,7 +72,7 @@ nav {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: c;
+    justify-content: center;
 }
 
 .btn-container {
@@ -85,9 +86,10 @@ nav {
     background: #f5f5dc;
     border-radius: 10px;
     border: none;
-    width: 100px;
-    height: 50px;
-    font-size: 20px;
+    width: 90px;
+    height: 40px;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -106,6 +108,7 @@ nav {
     margin: none;
     padding: none;
     color: #ffffe0;
+    font-size: 0.9rem;
 }
 
 .slidecontainer {
@@ -120,10 +123,15 @@ nav {
 .delayTimeText, .volumeText {
     margin-top: 10px;
     font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.delayTimeText {
+    margin-bottom: 20px;
 }
 
 main {
-    padding: 55px 50px;
+    padding: 15px 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -143,7 +151,7 @@ main {
 .navSlider {
     -webkit-appearance: none;
     width: 100%;
-    height: 12px;
+    height: 8px;
     border-radius: 5px;  
     background: #d3d3d3;
     outline: none;
@@ -155,16 +163,16 @@ main {
   .navSlider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 25px;
-    height: 25px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%; 
     background: #04AA6D;
     cursor: pointer;
   }
   
   .navSlider::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     background: #04AA6D;
     cursor: pointer;
