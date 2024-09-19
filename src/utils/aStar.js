@@ -14,7 +14,7 @@ function setDelayTime(newDelayTime) {
 
 function terminateSearch() {
     runSearch = false;
-    console.log(`terminate in search: ${runSearch}`);
+    // console.log(`terminate in search: ${runSearch}`);
 }
 
 function reset() {
@@ -102,6 +102,7 @@ function drawFinalPath(cell, startCell, endCell, updateGrid) {
     }
     finalPath.unshift(curr);
     finalPath.forEach((cell) => {
+        cell.makeSound = false;
         if (cell.id !== startCell.id && cell.id !== endCell.id) {
             cell.color = CONSTANTS.PATHCOLOR;
             cell.freq = getVisitedCellFreq(cell, startCell, endCell);
