@@ -6,7 +6,7 @@ import { terminateSearch as dfsTerminateSearch, regularDFS, randomizedDFS, reset
 import { terminateSearch as bfsTerminateSearch, regularBFS, randomizedBFS, reset as bfsReset, setDelayTime as bfsSetDelayTime } from "./utils/bfs";
 import { nanoid } from "nanoid"
 import * as CONSTANTS from './utils/constants';
-import { startAudioContext } from './utils/playSound';
+import { startAudioContext, adjustVolume } from './utils/playSound';
 
 
 export default function App() {
@@ -20,6 +20,7 @@ export default function App() {
   const [isReset, setIsReset] = useState(false);
   const [isTerminated, setIsTerminated] = useState(false);
   const [navSliderValue, setNavSliderValue] = useState(0);
+  const [navVolumeValue, setNavVolumeValue] = useState(CONSTANTS.VOL_DEFAULT)
 
   // states related to grid
   const [grid, setGrid] = useState(createNewGrid());
@@ -97,6 +98,11 @@ export default function App() {
     } else if (selectedAlgo === "regularBFS" || selectedAlgo === "randomizedBFS") {
       bfsSetDelayTime(sliderValue);
     } 
+  }
+
+  const handleNavVolumeSlider = (navVolumeValue) => {
+    setNavVolumeValue(navVolumeValue);
+    adjustVolume(navVolumeValue);
   }
 
 
@@ -272,6 +278,8 @@ export default function App() {
             handleSelectedAlgo={handleSelectedAlgo}
             handleNavRangeSlier={handleNavRangeSlier}
             navSliderValue={navSliderValue}
+            handleNavVolumeSlider={handleNavVolumeSlider}
+            navVolumeValue={navVolumeValue}
             />
           <Main 
             navRadioState={navRadioState}

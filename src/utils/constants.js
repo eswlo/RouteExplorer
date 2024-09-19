@@ -19,6 +19,13 @@ const VISITEDCOLOR = "#8e9bae";
 // FREQUENCY
 const STARTFREQ = 220;
 const OCTAVE = 3;
+
+// VOLUME
+const VOL_MAX = -10;
+const VOL_MIN = -60;
+const VOL_DEFAULT = (VOL_MIN + VOL_MAX) /2;
+
+
 export {
     WIDTH,
     HEIGHT,
@@ -34,5 +41,8 @@ export {
     VISITEDCOLOR,
     PATHCOLOR,
     STARTFREQ,
-    OCTAVE
+    OCTAVE,
+    VOL_MAX,
+    VOL_MIN,
+    VOL_DEFAULT
 };

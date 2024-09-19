@@ -1,6 +1,7 @@
 // import React from "react"
 import PropTypes from 'prop-types';
 import { useState, useCallback } from 'react';
+import * as CONSTANTS from '../utils/constants';
 
 
 // a function that handle navbar
@@ -92,18 +93,33 @@ export default function Navbar(props) {
                 </div>
                 {warningMessage && <p className='nav-warning'>{warningMessage}</p>}
             </div>
-            <div className="slidecontainer">
-                <input
-                    type="range"
-                    min="0"
-                    max="3000"
-                    value={props.navSliderValue}
-                    className="navSlider"
-                    id="navSlider"
-                    onChange={() => props.handleNavRangeSlier(event.target.value)}
-                />
-                <p>Delay Time (ms): <span id="navSliderValue">{props.navSliderValue}</span></p>
+            <div className='slideToggleContainer'>
+                <div className="slidecontainer">
+                    <input
+                        type="range"
+                        min="0"
+                        max="3000"
+                        value={props.navSliderValue}
+                        className="navSlider"
+                        id="navSlider"
+                        onChange={() => props.handleNavRangeSlier(event.target.value)}
+                    />
+                    <p className='delayTimeText'>Delay Time (ms): <span id="navSliderValue">{props.navSliderValue}</span></p>
+                
+                    <input
+                        type="range"
+                        min={CONSTANTS.VOL_MIN}
+                        max={CONSTANTS.VOL_MAX}
+                        value={props.navVolumeValue}
+                        className="navSlider"
+                        id="navVolumeSlider"
+                        onChange={() => props.handleNavVolumeSlider(event.target.value)}
+                    />
+                    <p className='volumeText'>Volumn: <span id="volumeValue">{props.navVolumeValue}</span></p>
+                
+                </div>
             </div>
+
         </nav>
     )
 }
