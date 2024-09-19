@@ -6,6 +6,7 @@ import { terminateSearch as dfsTerminateSearch, regularDFS, randomizedDFS, reset
 import { terminateSearch as bfsTerminateSearch, regularBFS, randomizedBFS, reset as bfsReset, setDelayTime as bfsSetDelayTime } from "./utils/bfs";
 import { nanoid } from "nanoid"
 import * as CONSTANTS from './utils/constants';
+import { startAudioContext } from './utils/playSound';
 
 
 export default function App() {
@@ -53,9 +54,12 @@ export default function App() {
     handleReset();
   }
 
-  function handleExplore() {
+  async function handleExplore() {
     console.log(`exploreClicked: ${exploreClicked}`);
     if (startCell && endCell) {
+      // Ensure the AudioContext is started
+      await startAudioContext();
+      
       console.log("set true");
       setExploreClicked(true);
       handleRadioChange("");
@@ -233,7 +237,8 @@ export default function App() {
     g: Infinity,
     h: Infinity,
     f: Infinity,
-    freq: 0
+    freq: 0,
+    makeSound: false
     })
   }
 

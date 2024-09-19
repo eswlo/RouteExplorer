@@ -1,4 +1,5 @@
 import * as CONSTANTS from './constants';
+import getVisitedCellFreq from "./getVisitedCellFreq";
 
 let tempPath = [];
 const visitedSet = new Set();
@@ -70,13 +71,14 @@ function retoreTempPath(restorePath, startCell, updateGrid) {
         if (cell.id !== startCell.id) {
             cell.color = CONSTANTS.VISITEDCOLOR;
         }
+        cell.makeSound = false;
     });
     // console.log('restorePath');
     // console.log(restorePath);
     updateGrid(restorePath);
 }
 
-function drawTempPath(path, startCell, updateGrid) {
+function drawTempPath(path, startCell, endCell, updateGrid, lastCellID) {
     if (tempPath.length !== 0) {
         retoreTempPath(tempPath, startCell, updateGrid);
         tempPath = [];
@@ -86,6 +88,8 @@ function drawTempPath(path, startCell, updateGrid) {
         if (cell.id !== startCell.id) {
             cell.color = CONSTANTS.PATHCOLOR;
         }
+        getVisitedCellFreq(cell, startCell, endCell)
+        cell.makeSound = true;
     })
     // console.log('tempPath');
     // console.log(tempPath);
@@ -132,7 +136,8 @@ async function dfs(startCell, endCell, grid, updateGrid, isRandomized) {
         // console.log(path); 
         const pathSize = path.length;
         const curr = path[pathSize - 1];
-        drawTempPath(path, startCell, updateGrid);
+        const lastCellID = curr.id;
+        drawTempPath(path, startCell, endCell, updateGrid, lastCellID);
         if (curr.id === endCell.id) {
             return drawFinalPath(path, startCell, endCell, updateGrid);
         } else {

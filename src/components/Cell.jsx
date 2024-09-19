@@ -1,6 +1,8 @@
 import React from "react"
 import PropTypes from 'prop-types';
 import * as CONSTANTS from '../utils/constants';
+import { playSoundForCell } from '../utils/playSound';
+
 
 
 // memoizes the rendering of the functional component cell to avoide unnecessary re-renders.
@@ -29,6 +31,10 @@ const Cell = React.memo((props) => {
         backgroundColor: props.cell.color,
         borderRadius: cellBorderRadius,
         border: cellBorder
+    }
+
+    if(props.cell.makeSound) {
+        playSoundForCell(props.cell.freq);
     }
 
     return (

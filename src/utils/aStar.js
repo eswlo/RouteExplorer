@@ -1,6 +1,8 @@
 // import { useState } from 'react';
 import * as CONSTANTS from './constants';
 import { MinHeap } from './minHeap';
+import getVisitedCellFreq from "./getVisitedCellFreq";
+import getDistance from './getDistance';
 
 let tempPath = [];
 let runSearch = true;
@@ -21,12 +23,6 @@ function reset() {
     delayTime = 0;
 }
 
-// modify the conversion later!
-function getVisitedCellFreq(curr, startCell, endCell) {
-    const distBtwnCurrAndStart = getDistance(curr, startCell);
-    const distBtwnStartAndEnd = getDistance(startCell, endCell);
-    return (startCell.freq * ( (distBtwnCurrAndStart/distBtwnStartAndEnd) * (2 ** CONSTANTS.OCTAVE) ));
-}
 
 function getNeighborCellsArr(curr, grid) {
     const row = curr.y;
@@ -122,6 +118,7 @@ function retoreTempPath(tempPath, startCell, updateGrid) {
         if (cell.id !== startCell.id) {
             cell.color = CONSTANTS.VISITEDCOLOR;
         }
+        cell.makeSound = false;
     });
     updateGrid(tempPath);
 }
@@ -132,10 +129,19 @@ function drawTempPath(cell, startCell, endCell, updateGrid) {
         tempPath = [];
     }
     let curr = cell;
+    const lastCellID = curr.id;
+    
     while (curr.id !== startCell.id) {
+        if (curr.id === lastCellID) {
+            curr.makeSound = true;
+        }
         tempPath.unshift(curr);
         // console.log(curr.x, curr.y);
-        curr = curr.prev;
+        if (curr.prev != null) {
+            curr = curr.prev;
+        } else {
+            break;
+        }
     }
     tempPath.unshift(curr);
     tempPath.forEach((cell) => {
@@ -148,12 +154,6 @@ function drawTempPath(cell, startCell, endCell, updateGrid) {
     updateGrid(tempPath);
 }
 
-
-function getDistance(cell1, cell2) {
-    const x = Math.abs(cell1.x - cell2.x);
-    const y = Math.abs(cell1.y - cell2.y);
-    return Math.sqrt((x*x + y*y));
-}
 
 function isNewPathShorter(curr, neighbor) {
     return ((curr.g + getDistance(curr, neighbor)) < neighbor.g)
