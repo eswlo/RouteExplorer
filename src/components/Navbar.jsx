@@ -115,7 +115,7 @@ export default function Navbar(props) {
                         id="navVolumeSlider"
                         onChange={() => props.handleNavVolumeSlider(event.target.value)}
                     />
-                    <p className='volumeText'>Volumn: <span id="volumeValue">{props.navVolumeValue}</span></p>
+                    <p className='volumeText'>Volume (dB): <span id="volumeValue">{props.navVolumeValue}</span></p>
                 
                 </div>
             </div>

@@ -1,2 +1,2 @@
 - add more search algo
-- add toggle to mute sound (ie, when toggle on, curr cell's makeSound won't be set to true in search algo)
+- make responsive design
