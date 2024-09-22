@@ -100,7 +100,7 @@ export default function Navbar(props) {
                         disabled={!props.isTerminated}
                     >Reset</button>
                 </div>
-                {warningMessage && <p className='nav-warning'>{props.exploreClicked ? "Exploring 🛣️" : warningMessage}</p>}
+                {<p className='nav-warning'>{props.exploreClicked ? " " : warningMessage}</p>}
             </div>
             <div className='slideToggleContainer'>
                 <div className="slidecontainer">
