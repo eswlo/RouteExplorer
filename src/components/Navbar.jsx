@@ -82,6 +82,7 @@ export default function Navbar(props) {
                 <div className="btn-container">
                     <button className="nav-btn"
                         onClick={props.handleExplore}
+                        disabled={!props.startCell || !props.endCell || props.isTerminated || props.exploreClicked}
                     >Explore</button>
                     <button className="nav-btn"
                         onClick={props.handleTerminate}
