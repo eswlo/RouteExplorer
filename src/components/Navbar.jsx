@@ -7,6 +7,7 @@ import * as CONSTANTS from '../utils/constants';
 // a function that handle navbar
 export default function Navbar(props) {
     // console.log(props.startCell);
+    // console.log(props.isSearchDone);
 
     const getWarningMessage = useCallback(() => {
         if (!props.startCell && !props.endCell) {
@@ -84,7 +85,7 @@ export default function Navbar(props) {
                     >Explore</button>
                     <button className="nav-btn"
                         onClick={props.handleTerminate}
-                        disabled={!props.startCell || !props.endCell || !props.exploreClicked}
+                        disabled={!props.startCell || !props.endCell || !props.exploreClicked || props.isSearchDone}
                     >Terminate</button>
                     <button className="nav-btn"
                         onClick={props.handleReset}

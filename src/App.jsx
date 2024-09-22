@@ -27,6 +27,12 @@ export default function App() {
   const [startCell, setStartCell] = useState(null); 
   const [endCell, setEndCell] = useState(null);
 
+  const handleSearchDone = () => {
+    console.log("search done");
+    handleTerminate();
+    setIsSearchDone(true);
+  }
+
   const reset = () => {
     console.log("reset");
     aStarReset();
@@ -41,6 +47,7 @@ export default function App() {
     setIsReset(true);
     setIsTerminated(false);
     setNavSliderValue(0);
+    setIsSearchDone(false);
   }
 
   function handleReset() {
@@ -112,15 +119,15 @@ export default function App() {
       console.log("start search");
       console.log(exploreClicked);
       if (selectedAlgo === "aStar") {
-        aStar(startCell, endCell, grid, updateGrid);
+        aStar(startCell, endCell, grid, updateGrid, handleSearchDone);
       } else if (selectedAlgo === "regularDFS") {
-        regularDFS(startCell, endCell, grid, updateGrid);
+        regularDFS(startCell, endCell, grid, updateGrid, handleSearchDone);
       } else if (selectedAlgo === "randomizedDFS") {
-        randomizedDFS(startCell, endCell, grid, updateGrid);
+        randomizedDFS(startCell, endCell, grid, updateGrid, handleSearchDone);
       } else if (selectedAlgo === "regularBFS") {
-        regularBFS(startCell, endCell, grid, updateGrid);
+        regularBFS(startCell, endCell, grid, updateGrid, handleSearchDone);
       } else {
-        randomizedBFS(startCell, endCell, grid, updateGrid);
+        randomizedBFS(startCell, endCell, grid, updateGrid, handleSearchDone);
       }
     } else {
         setExploreClicked(false);
@@ -280,6 +287,7 @@ export default function App() {
             navSliderValue={navSliderValue}
             handleNavVolumeSlider={handleNavVolumeSlider}
             navVolumeValue={navVolumeValue}
+            isSearchDone={isSearchDone}
             />
           <Main 
             navRadioState={navRadioState}

@@ -92,7 +92,7 @@ function setNeighborCellCosts(curr, neighbor, startCell, endCell) {
     }
 }
 
-function drawFinalPath(cell, startCell, endCell, updateGrid) {
+function drawFinalPath(cell, startCell, endCell, updateGrid, handleSearchDone) {
     const finalPath = [];
     let curr = cell;
     while (curr.id !== startCell.id) {
@@ -110,6 +110,7 @@ function drawFinalPath(cell, startCell, endCell, updateGrid) {
         }
     })
     console.log(endCell.freq);
+    handleSearchDone();
     updateGrid(finalPath);
     return "Route Found";
 }
@@ -160,7 +161,7 @@ function isNewPathShorter(curr, neighbor) {
     return ((curr.g + getDistance(curr, neighbor)) < neighbor.g)
 }
 
-async function aStar(startCell, endCell, grid, updateGrid) {    
+async function aStar(startCell, endCell, grid, updateGrid, handleSearchDone) {    
     // console.log("in astar");
     // console.log(runSearch);
     const queue = new MinHeap();
@@ -180,7 +181,7 @@ async function aStar(startCell, endCell, grid, updateGrid) {
         drawTempPath(curr, startCell, endCell, updateGrid);
 
         if (curr.id === endCell.id) {
-            return drawFinalPath(curr, startCell, endCell, updateGrid);
+            return drawFinalPath(curr, startCell, endCell, updateGrid, handleSearchDone);
         } else {
             const neighborCellsArr = getNeighborCellsArr(curr, grid);
             for (const nc of neighborCellsArr) {
@@ -197,6 +198,7 @@ async function aStar(startCell, endCell, grid, updateGrid) {
             }
         }
     }
+    handleSearchDone();
     return "Rote Not Found"
 }
 

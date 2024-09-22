@@ -10,12 +10,12 @@ function setDelayTime(newDelayTime) {
     delayTime = newDelayTime;
 }
 
-function regularDFS(startCell, endCell, grid, updateGrid) {
-    return dfs(startCell, endCell, grid, updateGrid, false);
+function regularDFS(startCell, endCell, grid, updateGrid, handleSearchDone) {
+    return dfs(startCell, endCell, grid, updateGrid, false, handleSearchDone);
 }
 
-function randomizedDFS(startCell, endCell, grid, updateGrid) {
-    return dfs(startCell, endCell, grid, updateGrid, true);
+function randomizedDFS(startCell, endCell, grid, updateGrid, handleSearchDone) {
+    return dfs(startCell, endCell, grid, updateGrid, true, handleSearchDone);
 }
 
 function terminateSearch() {
@@ -100,7 +100,7 @@ function drawTempPath(path, startCell, endCell, updateGrid, lastCellID) {
 
 
 
-function drawFinalPath(finalPath, startCell, endCell, updateGrid) {
+function drawFinalPath(finalPath, startCell, endCell, updateGrid, handleSearchDone) {
     // console.log("drawFinalPath");
     finalPath.forEach((cell) => {
         if (cell.id !== startCell.id && cell.id !== endCell.id) {
@@ -108,6 +108,7 @@ function drawFinalPath(finalPath, startCell, endCell, updateGrid) {
         }
     });
     reset();
+    handleSearchDone();
     updateGrid(finalPath);
     return "Route Found";
 }
@@ -125,7 +126,7 @@ function shuffleArray(array) {
 }
 
 
-async function dfs(startCell, endCell, grid, updateGrid, isRandomized) {
+async function dfs(startCell, endCell, grid, updateGrid, isRandomized, handleSearchDone) {
     const pathStack = [];
     // console.log(endCell);
     pathStack.unshift([startCell]);
@@ -141,7 +142,7 @@ async function dfs(startCell, endCell, grid, updateGrid, isRandomized) {
         const lastCellID = curr.id;
         drawTempPath(path, startCell, endCell, updateGrid, lastCellID);
         if (curr.id === endCell.id) {
-            return drawFinalPath(path, startCell, endCell, updateGrid);
+            return drawFinalPath(path, startCell, endCell, updateGrid, handleSearchDone);
         } else {
             let neighborCellsArr = getNeighborCellsArr(curr, grid);
             if (isRandomized) {
@@ -162,6 +163,7 @@ async function dfs(startCell, endCell, grid, updateGrid, isRandomized) {
         }
     }
     reset();
+    handleSearchDone();
     return "No route found";
 }
 
