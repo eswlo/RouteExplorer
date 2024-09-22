@@ -5,9 +5,29 @@ let tempPath = [];
 const visitedSet = new Set();
 let runSearch = true;
 let delayTime = 0;
+let isPause = false;
+let resolve;
 
 function setDelayTime(newDelayTime) {
     delayTime = newDelayTime;
+}
+
+const delay = () => {
+    return new Promise((res) => {
+        resolve = res;
+        setTimeout(() => {
+            if (!isPause) {
+                resolve();
+            }
+        }, delayTime)
+    }); // Wait for certain amount of tiie between each loop
+}
+
+const pause = () => {
+    isPause = !isPause;
+    if (!isPause) {
+        resolve();
+    };
 }
 
 function regularDFS(startCell, endCell, grid, updateGrid, handleSearchDone) {
@@ -132,8 +152,8 @@ async function dfs(startCell, endCell, grid, updateGrid, isRandomized, handleSea
     pathStack.unshift([startCell]);
     visitedSet.add(startCell);
     while (pathStack.length !== 0 && runSearch) {
-        await new Promise(resolve => setTimeout(resolve, delayTime)); // Wait for certain amount of tiie between each loop
-
+        // await new Promise(resolve => setTimeout(resolve, delayTime)); // Wait for certain amount of tiie between each loop
+        await delay();
         const path = pathStack.shift();
         // console.log(`path`);
         // console.log(path); 
@@ -172,5 +192,6 @@ export {
     randomizedDFS,
     terminateSearch,
     reset,
-    setDelayTime
+    setDelayTime,
+    pause
 }

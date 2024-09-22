@@ -6,9 +6,29 @@ let tempPath = [];
 const visitedSet = new Set();
 let runSearch = true;
 let delayTime = 0;
+let isPause = false;
+let resolve;
 
 function setDelayTime(newDelayTime) {
     delayTime = newDelayTime;
+}
+
+const delay = () => {
+    return new Promise((res) => {
+        resolve = res;
+        setTimeout(() => {
+            if (!isPause) {
+                resolve();
+            }
+        }, delayTime)
+    }); // Wait for certain amount of tiie between each loop
+}
+
+const pause = () => {
+    isPause = !isPause;
+    if (!isPause) {
+        resolve();
+    };
 }
 
 
@@ -135,8 +155,8 @@ export default async function bfs(startCell, endCell, grid, updateGrid, isRandom
     pathQueue.push([startCell]);
     visitedSet.add(startCell);
     while (pathQueue.length !== 0 && runSearch) {
-        await new Promise(resolve => setTimeout(resolve, delayTime)); // Wait for certain amount of tiie between each loop
-
+        // await new Promise(resolve => setTimeout(resolve, delayTime)); // Wait for certain amount of tiie between each loop
+        await delay();
         const path = pathQueue.shift();
         // console.log(`path`);
         // console.log(path); 
@@ -176,5 +196,6 @@ export {
     randomizedBFS,
     terminateSearch,
     reset,
-    setDelayTime
+    setDelayTime,
+    pause
 }

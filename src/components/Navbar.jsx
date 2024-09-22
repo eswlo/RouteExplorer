@@ -51,6 +51,7 @@ export default function Navbar(props) {
                     value="setStart"
                     checked={props.radioSelectedOption === 'setStart'}
                     onChange={() => props.handleRadioChange("setStart")}
+                    disabled={props.exploreClicked}
                 />
                 <label className="nav-radio-label" htmlFor="setStart">Set start cell</label>
                 <br />
@@ -62,6 +63,7 @@ export default function Navbar(props) {
                     value="setEnd"
                     checked={props.radioSelectedOption === 'setEnd'}
                     onChange={() => props.handleRadioChange("setEnd")}
+                    disabled={props.exploreClicked}
                 />
                 <label className="nav-radio-label" htmlFor="setEnd">Set end cell</label>
                 <br />
@@ -73,6 +75,7 @@ export default function Navbar(props) {
                     value="setBarriers"
                     checked={props.radioSelectedOption === 'setBarriers'}
                     onChange={() => props.handleRadioChange("setBarriers")}
+                    disabled={props.exploreClicked}
                 />
                 <label className="nav-radio-label" htmlFor="setBarriers">Draw barrier(s)</label>
                 <br />

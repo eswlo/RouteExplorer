@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Main from './components/Main'
 import { terminateSearch as aStarTerminateSearch, aStar, reset as aStarReset, setDelayTime as aStarsetDelayTime, pause as aStarPause } from './utils/aStar';
-import { terminateSearch as dfsTerminateSearch, regularDFS, randomizedDFS, reset as dfsReset, setDelayTime as dfSsetDelayTime } from "./utils/dfs";
-import { terminateSearch as bfsTerminateSearch, regularBFS, randomizedBFS, reset as bfsReset, setDelayTime as bfsSetDelayTime } from "./utils/bfs";
+import { terminateSearch as dfsTerminateSearch, regularDFS, randomizedDFS, reset as dfsReset, setDelayTime as dfSsetDelayTime, pause as dfsPause } from "./utils/dfs";
+import { terminateSearch as bfsTerminateSearch, regularBFS, randomizedBFS, reset as bfsReset, setDelayTime as bfsSetDelayTime, pause as bfsPause } from "./utils/bfs";
 import { nanoid } from "nanoid"
 import * as CONSTANTS from './utils/constants';
 import { startAudioContext, adjustVolume } from './utils/playSound';
@@ -35,9 +35,14 @@ export default function App() {
   }
 
   const handlePause = () => {
-    console.log("in app");
-    console.log(isPause);
-    aStarPause();
+    // console.log(isPause);
+    if (selectedAlgo === "aStar") {
+      aStarPause();
+    } else if (selectedAlgo === "regularDFS" || selectedAlgo === "randomizedDFS") {
+      dfsPause();
+    } else if (selectedAlgo === "regularBFS" || selectedAlgo === "randomizedBFS") {
+      bfsPause();
+    } 
     setPause(!isPause);
   }
 
