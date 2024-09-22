@@ -28,13 +28,13 @@ export default function App() {
   const [endCell, setEndCell] = useState(null);
 
   const handleSearchDone = () => {
-    console.log("search done");
+    // console.log("search done");
     handleTerminate();
     setIsSearchDone(true);
   }
 
   const reset = () => {
-    console.log("reset");
+    // console.log("reset");
     aStarReset();
     dfsReset();
     bfsReset();
@@ -56,19 +56,19 @@ export default function App() {
 
   // functions related to navbar
   function handleSelectedAlgo(algo) {
-    console.log(`algo: ${algo}`);
+    // console.log(`algo: ${algo}`);
     setSelectedAlgo(algo);
     handleTerminate();
     handleReset();
   }
 
   async function handleExplore() {
-    console.log(`exploreClicked: ${exploreClicked}`);
+    // console.log(`exploreClicked: ${exploreClicked}`);
     if (startCell && endCell) {
       // Ensure the AudioContext is started
       await startAudioContext();
       
-      console.log("set true");
+      // console.log("set true");
       setExploreClicked(true);
       handleRadioChange("");
     } else {
@@ -77,7 +77,7 @@ export default function App() {
   }
 
   function handleTerminate() {
-    console.log("handleTerminate");
+    // console.log("handleTerminate");
     setIsTerminated(true);
 
     if (selectedAlgo === "aStar") {
@@ -116,8 +116,8 @@ export default function App() {
   // funcsions for Main / Grid / Cell
   useEffect(() => {
     if (exploreClicked && startCell && endCell) {
-      console.log("start search");
-      console.log(exploreClicked);
+      // console.log("start search");
+      // console.log(exploreClicked);
       if (selectedAlgo === "aStar") {
         aStar(startCell, endCell, grid, updateGrid, handleSearchDone);
       } else if (selectedAlgo === "regularDFS") {
@@ -137,7 +137,7 @@ export default function App() {
 
   useEffect(() => {
     if (isReset) {
-      console.log('Refreshing grid');
+      // console.log('Refreshing grid');
       setGrid(createNewGrid());
       setIsReset(false);
     }
@@ -159,9 +159,9 @@ export default function App() {
   }
 
   const setNewStateAndColor = (cell) => {
-    console.log("setnewstate");
-    console.log(exploreClicked);
-    console.log(radioSelectedOption);
+    // console.log("setnewstate");
+    // console.log(exploreClicked);
+    // console.log(radioSelectedOption);
     let newColor = "";
     let newState = "";
     if (radioSelectedOption !== "") {

@@ -106,10 +106,10 @@ function drawFinalPath(cell, startCell, endCell, updateGrid, handleSearchDone) {
         if (cell.id !== startCell.id && cell.id !== endCell.id) {
             cell.color = CONSTANTS.PATHCOLOR;
             cell.freq = getVisitedCellFreq(cell, startCell, endCell);
-            console.log(cell.freq);
+            // console.log(cell.freq);
         }
     })
-    console.log(endCell.freq);
+    // console.log(endCell.freq);
     handleSearchDone();
     updateGrid(finalPath);
     return "Route Found";
