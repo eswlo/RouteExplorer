@@ -85,6 +85,10 @@ export default function Navbar(props) {
                         disabled={!props.startCell || !props.endCell || props.isTerminated || props.exploreClicked}
                     >Explore</button>
                     <button className="nav-btn"
+                        onClick={props.handlePause}
+                        disabled={!props.startCell || !props.endCell || props.isTerminated || props.isSearchDone || !props.exploreClicked}
+                    >{props.isPause ? "Resume" : "Pause"}</button>
+                    <button className="nav-btn"
                         onClick={props.handleTerminate}
                         disabled={!props.startCell || !props.endCell || !props.exploreClicked || props.isSearchDone}
                     >Terminate</button>

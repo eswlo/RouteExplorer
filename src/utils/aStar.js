@@ -7,9 +7,30 @@ import getDistance from './getDistance';
 let tempPath = [];
 let runSearch = true;
 let delayTime = 0;
+let isPause = false;
+let resolve;
+
 
 function setDelayTime(newDelayTime) {
     delayTime = newDelayTime;
+}
+
+const delay = () => {
+    return new Promise((res) => {
+        resolve = res;
+        setTimeout(() => {
+            if (!isPause) {
+                resolve();
+            }
+        }, delayTime)
+    }); // Wait for certain amount of tiie between each loop
+}
+
+const pause = () => {
+    isPause = !isPause;
+    if (!isPause) {
+        resolve();
+    };
 }
 
 function terminateSearch() {
@@ -174,7 +195,10 @@ async function aStar(startCell, endCell, grid, updateGrid, handleSearchDone) {
 
 
     while (!queue.isEmpty() && runSearch) {
-        await new Promise(resolve => setTimeout(resolve, delayTime)); // Wait for certain amount of tiie between each loop
+        // await new Promise((resolve) => {
+        //     timeoutId = setTimeout(resolve, delayTime)
+        // }); // Wait for certain amount of tiie between each loop
+        await delay();
 
         const curr = queue.heapPop(); // pop the cell with lowest f cost
         addToSetAndRender(curr, visitedSet, updateGrid);
@@ -203,4 +227,4 @@ async function aStar(startCell, endCell, grid, updateGrid, handleSearchDone) {
 }
 
 
-export {terminateSearch, aStar, reset, setDelayTime}
+export {terminateSearch, aStar, reset, setDelayTime, pause}

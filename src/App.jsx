@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Main from './components/Main'
-import { terminateSearch as aStarTerminateSearch, aStar, reset as aStarReset, setDelayTime as aStarsetDelayTime } from './utils/aStar';
+import { terminateSearch as aStarTerminateSearch, aStar, reset as aStarReset, setDelayTime as aStarsetDelayTime, pause as aStarPause } from './utils/aStar';
 import { terminateSearch as dfsTerminateSearch, regularDFS, randomizedDFS, reset as dfsReset, setDelayTime as dfSsetDelayTime } from "./utils/dfs";
 import { terminateSearch as bfsTerminateSearch, regularBFS, randomizedBFS, reset as bfsReset, setDelayTime as bfsSetDelayTime } from "./utils/bfs";
 import { nanoid } from "nanoid"
@@ -21,6 +21,7 @@ export default function App() {
   const [isTerminated, setIsTerminated] = useState(false);
   const [navSliderValue, setNavSliderValue] = useState(0);
   const [navVolumeValue, setNavVolumeValue] = useState(CONSTANTS.VOL_DEFAULT)
+  const [isPause, setPause] = useState(false);
 
   // states related to grid
   const [grid, setGrid] = useState(createNewGrid());
@@ -31,6 +32,13 @@ export default function App() {
     // console.log("search done");
     handleTerminate();
     setIsSearchDone(true);
+  }
+
+  const handlePause = () => {
+    console.log("in app");
+    console.log(isPause);
+    aStarPause();
+    setPause(!isPause);
   }
 
   const reset = () => {
@@ -48,6 +56,7 @@ export default function App() {
     setIsTerminated(false);
     setNavSliderValue(0);
     setIsSearchDone(false);
+    setPause(false);
   }
 
   function handleReset() {
@@ -288,6 +297,8 @@ export default function App() {
             handleNavVolumeSlider={handleNavVolumeSlider}
             navVolumeValue={navVolumeValue}
             isSearchDone={isSearchDone}
+            handlePause={handlePause}
+            isPause={isPause}
             />
           <Main 
             navRadioState={navRadioState}
